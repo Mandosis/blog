@@ -1,6 +1,6 @@
 # Blog
 
-This blogging software is built on Angular 2 with universal rendering (server and client) using the MEAN Stack.
+This repository is for a developer focused blogging software that can be used to share code and ideas.
 
 ## Instructions
 
