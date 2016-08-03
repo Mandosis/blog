@@ -11,4 +11,4 @@ var router: any = express.Router();
  */
 router.get('/*', ngApp);
 
-module.exports = router;
+export { router as Router };
