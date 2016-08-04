@@ -1,0 +1,7 @@
+main {
+  height: 100vh;
+  background: #FFF;
+  font-family: 'Arial', sans-serif;
+  color: #444;
+  overflow: hidden;
+}

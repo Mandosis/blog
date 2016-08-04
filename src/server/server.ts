@@ -69,7 +69,7 @@ app.use(express.static(path.join(ROOT, 'public'), {index: false}));
 app.use('/assets/js', express.static(path.join(ROOT, '/dist/client')));
 
 /*
- * Routes
+ * Router
  */
 
 import { Router } from './routes/router';
