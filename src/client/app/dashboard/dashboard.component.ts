@@ -3,8 +3,8 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
   selector: 'dashboard',
-  templateUrl: 'dashboard.component.html',
-  styleUrls: ['dashboard.component.css'],
+  template: require('./dashboard.component.pug'),
+  styles: [ require('./dashboard.component.scss') ],
   directives: [
     ROUTER_DIRECTIVES
   ]

@@ -12,7 +12,7 @@ module.exports = {
       { test: /\.html$/, loader: 'raw-loader' },
       { test: /\.css$/, loader: 'raw-loader' },
       { test: /\.json$/, loader: 'raw-loader' },
-      { test: /\.scss$/, loaders: ['raw-loader', 'sass-loader', exclude: /node_modules/ ] },
+      { test: /\.scss$/, exclude: /node_modules/, loaders: ['raw-loader', 'sass-loader'] },
       { test: /\.pug$/, loader: 'pug-html-loader' }
     ],
     preLoaders: [
