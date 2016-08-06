@@ -11,7 +11,9 @@ module.exports = {
       { test: /\.ts$/, loaders: ['ts-loader', 'angular2-template-loader'] },
       { test: /\.html$/, loader: 'raw-loader' },
       { test: /\.css$/, loader: 'raw-loader' },
-      { test: /\.json$/, loader: 'raw-loader' }
+      { test: /\.json$/, loader: 'raw-loader' },
+      { test: /\.scss$/, loaders: ['raw-loader', 'sass-loader', exclude: /node_modules/ ] },
+      { test: /\.pug$/, loader: 'pug-html-loader' }
     ],
     preLoaders: [
       // needed to lower the filesize of angular due to inline source-maps
