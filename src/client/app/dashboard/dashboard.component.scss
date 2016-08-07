@@ -1,4 +1,4 @@
-$primary-border: #EEE;
+$primary-border: #DFE1E3;
 $nav-background: #F5F5F5;
 
 nav {
@@ -9,6 +9,19 @@ nav {
   position: fixed;
   left: 0;
   z-index: 100;
+
+  section {
+    height: 40px;
+    width: 100%;
+    border-top: 1px solid $primary-border;
+    position: absolute;
+    bottom: 0;
+    transition: background 0.2s ease-in;
+
+    &:hover {
+      background: #FFF;
+    }
+  }
 }
 
 main {
@@ -48,7 +61,7 @@ button {
 
   nav {
     left: -280px;
-    transition: left 0.8s;
+    transition: left 0.6s;
     box-shadow: 3px 0px 10px 0px rgba(50, 50, 50, 0.25);
   }
 

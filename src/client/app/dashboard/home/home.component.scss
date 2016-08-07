@@ -2,19 +2,43 @@ $primary-border: #EEE;
 
 .title-bar {
   height: 60px;
-  width: calc(100% - 20px - 251px);
+  width: calc(100% - 40px - 251px);
   position: fixed;
   right: 0;
   top: 0;
   background: #FFF;
   border-bottom: 1px solid $primary-border;
   padding-left: 20px;
+  padding-right: 20px;
+
+  h1 {
+    display: inline;
+    margin-top: 15px;
+    position: absolute;
+  }
 }
 
 .section-body {
   margin-top: 61px;
-  width: calc(100% - 251px - 40px);
+  width: 100%;
 }
+
+.btn-new-post {
+  padding: 3px;
+  border: 1px solid rgb(42, 112, 194);
+  background: rgb(15, 154, 223);
+  color: #FFF;
+  z-index: 100;
+  height: 40px;
+  border-radius: 3px;
+  position: fixed;
+  min-width: 100px;
+  margin-top: 10px;
+  outline: none;
+  display: inline-block;
+  right: 20px;
+}
+
 
 @media screen and (max-width: 991px) {
   .title-bar {
