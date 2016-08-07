@@ -1,0 +1,10 @@
+header
+  h1 {{title}}
+  button New Post
+
+section
+  p Hello from the {{title}}!
+
+  textarea( "[(ngModel)]"="body" )
+
+  section( class="preview" "[innerHtml]"="body | markdown")

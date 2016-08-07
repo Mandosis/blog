@@ -1,0 +1,78 @@
+$primary-border: #EEE;
+
+header {
+  height: 60px;
+  width: calc(100% - 40px - 251px);
+  position: fixed;
+  right: 0;
+  top: 0;
+  background: #FFF;
+  border-bottom: 1px solid $primary-border;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  h1 {
+    display: inline;
+    margin-top: 15px;
+    position: absolute;
+  }
+}
+
+section {
+  margin-top: 61px;
+  width: 100%;
+}
+
+button {
+  padding: 3px;
+  border: 1px solid rgb(42, 112, 194);
+  background: rgb(15, 154, 223);
+  color: #FFF;
+  z-index: 100;
+  height: 40px;
+  border-radius: 3px;
+  position: fixed;
+  min-width: 100px;
+  margin-top: 10px;
+  outline: none;
+  display: inline-block;
+  right: 20px;
+}
+
+.preview {
+  width: calc(100% / 2 - 40px);
+  height: calc(100vh - 61px - 40px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: absolute;
+  right: 0;
+  padding: 20px;
+  bottom: 0;
+  border-left: 1px solid #DFE1E3;
+}
+
+textarea {
+  width: calc(100% / 2 - 40px);
+  height: calc(100vh - 61px - 40px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: absolute;
+  left: 0;
+  padding: 20px;
+  bottom: 0;
+  border-left: 1px solid #DFE1E3;
+  outline: none;
+  border: none;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 991px) {
+  header {
+    width: calc(100% - 80px);
+    padding-left: 80px;
+  }
+
+  section {
+    width: calc(100% - 40px);
+  }
+}

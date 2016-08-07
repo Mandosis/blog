@@ -9,6 +9,8 @@ var router: any = express.Router();
  * Catch all for client side rendering
  * Warning: Must be the last route!
  */
-router.get('/*', ngApp);
+router.get('/', ngApp);
+router.get('/dashboard', ngApp);
+router.get('/dashboard/*', ngApp);
 
 export { router as Router };
