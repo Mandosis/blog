@@ -1,10 +1,17 @@
 header
-  h1 {{title}}
-  button New Post
+  input(type="text" "[(ngModel)]"="post.title")
+  button Publish
 
 section
   p Hello from the {{title}}!
 
-  textarea( "[(ngModel)]"="body" )
+  textarea( "[(ngModel)]"="post.body" )
 
-  section( class="preview" "[innerHtml]"="body | markdown")
+  section( class="preview" "[innerHtml]"="post.body | markdown")
+
+footer
+  section.left
+    p.name Markdown
+  section.right
+    p.name Preview
+    p.count Word Count: {{post.body | markdown | wordCount }}

@@ -8,7 +8,7 @@ clientConfig = {
   target: 'web',
   entry: {
     polyfills: '../src/client/polyfills.ts',
-    vendor: '../src/client/vendor.ts',
+    // vendor: '../src/client/vendor.ts',
     main: '../src/client/client.ts'
   },
   output: {
