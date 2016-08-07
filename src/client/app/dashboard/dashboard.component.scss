@@ -1,13 +1,63 @@
+$primary-border: #EEE;
+$nav-background: #F5F5F5;
+
 nav {
-  background: #000;
-  height: 80px;
-  width: 100%;
+  background: $nav-background;
+  border-right: 1px solid $primary-border;
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  left: 0;
+  z-index: 100;
 }
 
 main {
-  min-height: calc(100vh - 80px);
-  background: #999;
+  min-height: calc(100vh - 40px); // Page height - s-title - padding
+  background: #FFF;
   position: absolute;
-  width: 100%;
+  right: 0;
+  width: calc(100% - 251px - 40px); // Full width - navbar w/ border - padding
   padding: 20px;
+  overflow: hidden;
+  z-index: 50;
+}
+
+button {
+  padding: 3px;
+  border: 1px solid #EEE;
+  z-index: 100;
+  height: 40px;
+  border-radius: 3px;
+  position: fixed;
+  left: 20px;
+  min-width: 40px;
+  margin-top: 10px;
+  outline: none;
+}
+
+@media screen and (min-width: 992px) {
+  button {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  button {
+    display: block;
+  }
+
+  nav {
+    left: -280px;
+    transition: left 0.8s;
+  }
+
+  main {
+    width: calc(100% - 40px);
+  }
+
+  .open {
+    left: 0;
+  }
+
+
 }

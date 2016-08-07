@@ -12,4 +12,16 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 
 export class Dashboard {
   title = 'dashboard';
+  menuOpen: boolean = false;
+
+  extendMenu() {
+    if(this.menuOpen) {
+      this.menuOpen = false;
+    } else {
+      this.menuOpen = true;
+    }
+
+    console.log('extendMenu', this.menuOpen);
+  }
+
 }

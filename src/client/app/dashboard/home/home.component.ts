@@ -2,10 +2,14 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'dashboard-home',
-  templateUrl: './home.component.html',
-  styleUrls: [ './home.component.css' ],
+  template: require('./home.component.pug'),
+  styles: [ require('./home.component.scss') ],
 })
 
 export class DashboardHome {
-  title: 'Home';
+  title = 'Home';
+
+  sayHello() {
+    console.log('Hello!');
+  }
 }

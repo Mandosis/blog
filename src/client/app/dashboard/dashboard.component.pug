@@ -1,5 +1,7 @@
-nav
+header
+  button("(click)"="extendMenu()") open
 
-main
-  h1 {{title}}
+nav("[class.open]"="menuOpen")
+
+main("(click)"="menuOpen = false")
   router-outlet
