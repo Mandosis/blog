@@ -19,6 +19,5 @@ export class Editor {
     title: 'Welcome to the Editor',
     body: '# Hello'
   }
-  title: string = 'This is the Title';
-  body: string = '# Hello';
+  title: string = 'Editor';
 }
