@@ -1,9 +1,12 @@
 import * as express from 'express';
 import { ngApp } from './ngApp';
+import { ApiRoutes } from './api';
+
 
 var router: any = express.Router();
 
 // Put API routes here
+router.use('/v1', ApiRoutes);
 
 /*
  * Catch all for client side rendering
