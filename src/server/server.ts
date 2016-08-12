@@ -43,9 +43,9 @@ winston.add(winston.transports.Console, {
  * Connect to database
  * Info: See database.ts to configure settings
  */
- import { Connect } from './database';
+ import { ConnectionString, InitializeDatabase } from './database';
 
- Connect();
+ InitializeDatabase(ConnectionString);
 
 
 /*

@@ -1,15 +1,59 @@
-import * as mongoose from 'mongoose';
 import * as winston from 'winston';
+import * as pg from 'pg';
 
-export function Connect() {
-  let MongoDB = mongoose.connect('mongodb://localhost/2MEAN').connection;
+export const ConnectionString: string = process.env.DB_CONNECTION_STRING || 'postgres://localhost:5432/blog';
 
-  MongoDB.on('open', () => {
-    winston.info('Connected to database');
-  });
+export function InitializeDatabase(connection: string): void {
+  pg.connect(connection, (err, client, done) => {
+    if (err) {
+      winston.error(err.toString());
+    } else {
+      // create schema if it does not exist
+      const userTable: string = `CREATE TABLE IF NOT EXISTS users(
+        id serial PRIMARY KEY,
+        email text NOT NULL,
+        password text NOT NULL,
+        first_name text NOT NULL,
+        last_name text NOT NULL
+      )`;
 
-  MongoDB.on('error', (err) => {
-    winston.error('Error connecting to database: ' + err);
-  });
+      const articlesTable: string = `CREATE TABLE IF NOT EXISTS articles(
+        id serial PRIMARY KEY,
+        title text NOT NULL,
+        date TIMESTAMP WITH TIME ZONE NOT NULL,
+        body text NOT NULL,
+        tags integer[],
+        cover_img text,
+        url string NOT NULL,
+        author_id integer NOT NULL
+      )`;
 
+      const pagesTable: string = `CREATE TABLE IF NOT EXISTS pages(
+        id serial PRIMARY KEY,
+        title text NOT NULL,
+        date TIMESTAMP WITH TIME ZONE NOT NULL,
+        body text NOT NULL,
+        url string NOT NULL,
+        author_id integer NOT NULL
+      )`;
+
+      const tagsTable: string = `CREATE TABLE IF NOT EXISTS tags(
+        id serial PRIMARY KEY,
+        name text NOT NULL,
+        articles integer[]
+      )`;
+
+      let query = client.query(userTable + articlesTable + tagsTable);
+
+      query.on('end', () => {
+        winston.info('Successfully created schmea');
+        done();
+      });
+
+      query.on('error', (err) => {
+        winston.error(err.toString());
+        process.exit(1);
+      });
+    }
+  })
 }

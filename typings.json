@@ -11,10 +11,9 @@
     "marked": "registry:dt/marked#0.0.0+20160325085301",
     "mime": "registry:dt/mime#0.0.0+20160316155526",
     "node": "registry:dt/node#4.0.0+20160412142033",
+    "pg": "registry:dt/pg#0.0.0+20160514172051",
     "serve-static": "registry:dt/serve-static#0.0.0+20160317120654",
     "winston": "registry:dt/winston#0.0.0+20160417152829"
   },
-  "dependencies": {
-    "mongoose": "registry:npm/mongoose#4.3.5+20160628072220"
-  }
+  "dependencies": {}
 }
