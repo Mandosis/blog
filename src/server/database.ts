@@ -15,7 +15,7 @@ export function InitializeDatabase(connection: string): void {
         password text NOT NULL,
         first_name text NOT NULL,
         last_name text NOT NULL
-      )`;
+      );`;
 
       const articlesTable: string = `CREATE TABLE IF NOT EXISTS articles(
         id serial PRIMARY KEY,
@@ -24,26 +24,26 @@ export function InitializeDatabase(connection: string): void {
         body text NOT NULL,
         tags integer[],
         cover_img text,
-        url string NOT NULL,
+        url text NOT NULL,
         author_id integer NOT NULL
-      )`;
+      );`;
 
       const pagesTable: string = `CREATE TABLE IF NOT EXISTS pages(
         id serial PRIMARY KEY,
         title text NOT NULL,
         date TIMESTAMP WITH TIME ZONE NOT NULL,
         body text NOT NULL,
-        url string NOT NULL,
+        url text NOT NULL,
         author_id integer NOT NULL
-      )`;
+      );`;
 
       const tagsTable: string = `CREATE TABLE IF NOT EXISTS tags(
         id serial PRIMARY KEY,
         name text NOT NULL,
         articles integer[]
-      )`;
+      );`;
 
-      let query = client.query(userTable + articlesTable + tagsTable);
+      let query = client.query(userTable + articlesTable + pagesTable + tagsTable);
 
       query.on('end', () => {
         winston.info('Successfully created schmea');
