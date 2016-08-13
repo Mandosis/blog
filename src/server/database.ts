@@ -1,7 +1,21 @@
 import * as winston from 'winston';
+import * as Promise from 'bluebird';
 import * as pg from 'pg';
 
-export const ConnectionString: string = process.env.DB_CONNECTION_STRING || 'postgres://localhost:5432/blog';
+import { EncryptPassword, ComparePassword } from './modules/encrypt';
+
+let uri: string = process.env.DB_CONNECTION_STRING || 'postgres://localhost:5432/blog';
+
+/**
+ * Database URI
+ */
+
+export const ConnectionString: string = uri;
+
+
+/**
+ * Check connection to database and create tables if they do not exist.
+ */
 
 export function InitializeDatabase(connection: string): void {
   pg.connect(connection, (err, client, done) => {
@@ -13,8 +27,7 @@ export function InitializeDatabase(connection: string): void {
         id serial PRIMARY KEY,
         email text NOT NULL,
         password text NOT NULL,
-        first_name text NOT NULL,
-        last_name text NOT NULL
+        name text NOT NULL,
       );`;
 
       const articlesTable: string = `CREATE TABLE IF NOT EXISTS articles(
@@ -56,4 +69,112 @@ export function InitializeDatabase(connection: string): void {
       });
     }
   })
-}
+};
+
+/**
+ * Create a new user
+ * Params: Accepts object containing username, password,
+ */
+
+ export class User {
+
+   user = {
+     id: this.user.stored_id,
+     email: '',
+     password: '',
+     name: '',
+     stored_id: '',
+     stored_email: '',
+     stored_password: '',
+     stored_name: ''
+
+   };
+
+   constructor (user) {
+     this.user = user;
+   };
+
+   save() {
+     let user = this.user;
+
+     /**
+      * Check if password was updated for password encryption
+      */
+     if (user.stored_password != '' && user.stored_password != user.password) {
+       user.password = EncryptPassword(user.password);
+     }
+
+     if (user.id == '') {
+       // Create new user
+       return new Promise((resolve, reject) => {
+         pg.connect(uri, (err, client) => {
+           if (err) {
+             reject(err);
+           } else {
+             let query = client.query(`INSERT INTO users(email, password, name) VALUE ($1, $2, $3)`, [ user.email, user.password, user.name]);
+
+             query.on('error', (err) => {
+               reject(err);
+             });
+
+             query.on('end', () => {
+               resolve();
+             })
+           }
+         });
+       });
+
+     } else {
+       // Update user
+
+       return new Promise((resolve, reject) => {
+         pg.connect(uri, (err, client) => {
+           if (err) {
+             reject(err);
+           } else {
+             let query = client.query(`
+               UPDATE users
+               SET email = $1,
+                password = $2,
+                name = $3
+               WHERE
+                id = $4`, [ user.email, user.password, user.name, user.id ]);
+
+             query.on('error', (err) => {
+               reject(err);
+             });
+
+             query.on('end', () => {
+               resolve();
+             })
+           }
+         });
+       });
+
+     }
+   }
+ };
+
+/**
+ * Check if something exists
+ * Example: exists('users', 'email', 'example@example.com').then().error();
+ */
+ function exists(table: string, column: string, row: string) {
+   return new Promise((resolve, reject) => {
+     pg.connect(uri, (err, client) => {
+       if (err) {
+         reject(err);
+       } else {
+         let query = client.query(`SELECT EXISTS(SELECT 1 FROM ${table} WHERE ${column}=$1`, [row], (err, result) => {
+           if (err) {
+             reject(err);
+           } else {
+             resolve(result);
+           }
+
+           client.end();
+         });
+       }
+     })
+   });
+ };

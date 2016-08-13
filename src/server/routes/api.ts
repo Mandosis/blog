@@ -1,4 +1,6 @@
 import * as express from 'express';
+import * as winston from 'winston';
+import { User } from '../database';
 
 let router = express.Router();
 
@@ -9,5 +11,28 @@ router.get('/', (req,res) => {
     message: `Welcome to the blog api!`
   });
 });
+
+router.post('/users', (req, res) => {
+  let user = new User({
+    email: req.body.email,
+    password: req.body.password,
+    name: req.body.name
+  });
+
+  user.save()
+    .then(() => {
+      res.status(201).json({
+        success: true,
+        message: `User created successfully`
+      });
+    })
+    .error((err) => {
+      winston.error(err);
+      res.status(500).json({
+        success: false,
+        message: `Internal error`
+      })
+    })
+})
 
 export { router as ApiRoutes };

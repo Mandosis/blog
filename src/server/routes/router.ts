@@ -12,6 +12,7 @@ router.use('/v1', ApiRoutes);
  * Catch all for client side rendering
  * Warning: Must be the last route!
  */
+
 router.get('/', ngApp);
 router.get('/dashboard', ngApp);
 router.get('/dashboard/*', ngApp);
