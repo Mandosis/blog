@@ -27,7 +27,7 @@ export function InitializeDatabase(connection: string): void {
         id serial PRIMARY KEY,
         email text NOT NULL,
         password text NOT NULL,
-        name text NOT NULL,
+        name text NOT NULL
       );`;
 
       const articlesTable: string = `CREATE TABLE IF NOT EXISTS articles(
@@ -59,7 +59,7 @@ export function InitializeDatabase(connection: string): void {
       let query = client.query(userTable + articlesTable + pagesTable + tagsTable);
 
       query.on('end', () => {
-        winston.info('Successfully created schmea');
+        winston.info('Successfully ensured schema exists');
         done();
       });
 
@@ -79,7 +79,7 @@ export function InitializeDatabase(connection: string): void {
  export class User {
 
    user = {
-     id: this.user.stored_id,
+     id: '',
      email: '',
      password: '',
      name: '',
@@ -91,7 +91,14 @@ export function InitializeDatabase(connection: string): void {
    };
 
    constructor (user) {
-     this.user = user;
+     this.user.email = user.email;
+     this.user.password = user.password;
+     this.user.name = user.name;
+     this.user.id = user.stored_id || '';
+     this.user.stored_id = user.stored_id || '';
+     this.user.stored_email = user.stored_email || '';
+     this.user.stored_password = user.stored_password || '';
+     this.user.stored_name = user.stored_name || '';
    };
 
    save() {
@@ -100,18 +107,19 @@ export function InitializeDatabase(connection: string): void {
      /**
       * Check if password was updated for password encryption
       */
-     if (user.stored_password != '' && user.stored_password != user.password) {
+     if (user.stored_password == '' || user.stored_password != user.password) {
        user.password = EncryptPassword(user.password);
      }
 
-     if (user.id == '') {
+     if (user.stored_id == '') {
+
        // Create new user
        return new Promise((resolve, reject) => {
          pg.connect(uri, (err, client) => {
            if (err) {
              reject(err);
            } else {
-             let query = client.query(`INSERT INTO users(email, password, name) VALUE ($1, $2, $3)`, [ user.email, user.password, user.name]);
+             let query = client.query(`INSERT INTO users(email, password, name) VALUES ($1, $2, $3)`, [ user.email, user.password, user.name]);
 
              query.on('error', (err) => {
                reject(err);
@@ -138,7 +146,7 @@ export function InitializeDatabase(connection: string): void {
                 password = $2,
                 name = $3
                WHERE
-                id = $4`, [ user.email, user.password, user.name, user.id ]);
+                id = $4;`, [ user.email, user.password, user.name, user.id ]);
 
              query.on('error', (err) => {
                reject(err);
@@ -165,7 +173,7 @@ export function InitializeDatabase(connection: string): void {
        if (err) {
          reject(err);
        } else {
-         let query = client.query(`SELECT EXISTS(SELECT 1 FROM ${table} WHERE ${column}=$1`, [row], (err, result) => {
+         let query = client.query(`SELECT EXISTS(SELECT 1 FROM ${table} WHERE ${column}=$1;`, [row], (err, result) => {
            if (err) {
              reject(err);
            } else {

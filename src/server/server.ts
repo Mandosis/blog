@@ -60,6 +60,7 @@ app.set('view engine', 'html');
  */
 app.use(cookieParser('Angular 2 Universal'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
 /*
