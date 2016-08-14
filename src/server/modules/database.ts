@@ -106,7 +106,7 @@ export function InitializeDatabase(connection: string): void {
        user.password = EncryptPassword(user.password);
      }
 
-     if (saved.id == '') {
+     if (saved.id == null) {
 
        // Create new user
        return new Promise((resolve, reject) => {
@@ -158,26 +158,94 @@ export function InitializeDatabase(connection: string): void {
    }
  };
 
-/**
- * Check if something exists
- * Example: exists('users', 'email', 'example@example.com').then().error();
- */
- function exists(table: string, column: string, row: string) {
-   return new Promise((resolve, reject) => {
-     pg.connect(uri, (err, client) => {
-       if (err) {
-         reject(err);
-       } else {
-         let query = client.query(`SELECT EXISTS(SELECT 1 FROM ${table} WHERE ${column}=$1;`, [row], (err, result) => {
-           if (err) {
-             reject(err);
-           } else {
-             resolve(result);
-           }
+export class Article {
+  article: any = {};
 
-           client.end();
-         });
-       }
-     })
-   });
- };
+  // Used to check if values were changed
+  private saved: any = {};
+
+  constructor (article: any, saved: any) {
+    if (saved.id != null || saved.id != '') {
+      this.saved = saved;
+      this.article = saved;
+    } else {
+      this.article = article;
+    }
+  }
+
+  save() {
+    let article = this.article;
+    let saved = this.saved;
+
+    if (saved.id == null) { // Means its a new article
+      return new Promise((resolve, reject) => {
+        pg.connect(uri, (err, client) => {
+          if (err) {
+            reject(err);
+          } else {
+            let query = client.query(`INSERT INTO articles(
+              title,
+              date,
+              body,
+              tags,
+              cover_img,
+              url,
+              author_id
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7)`, [
+              article.title,
+              article.date,
+              article.body,
+              article.tags,
+              article.cover_img,
+              article.url,
+              article.author_id
+            ]);
+
+            query.on('error', (err) => {
+              reject(err);
+            });
+
+            query.on('end', () => {
+              resolve();
+            })
+          }
+        });
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        pg.connect(uri, (err, client) => {
+          if (err) {
+            reject(err);
+          } else {
+            let query = client.query(`
+              UPDATE
+               articles
+              SET
+               title = $1,
+               body = $2,
+               tags = $3,
+               cover_img = $4,
+               url = $5,
+              WHERE
+               id = $6;`, [
+                 article.title,
+                 article.body,
+                 article.tags,
+                 article.cover_img,
+                 article.url
+               ]);
+
+            query.on('error', (err) => {
+              reject(err);
+            });
+
+            query.on('end', () => {
+              resolve();
+            })
+          }
+        });
+      });
+    }
+  };
+};
