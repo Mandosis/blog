@@ -2,7 +2,7 @@ import * as winston from 'winston';
 import * as Promise from 'bluebird';
 import * as pg from 'pg';
 
-import { EncryptPassword, ComparePassword } from './modules/encrypt';
+import { EncryptPassword, ComparePassword } from './encrypt';
 
 let uri: string = process.env.DB_CONNECTION_STRING || 'postgres://localhost:5432/blog';
 

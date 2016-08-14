@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as winston from 'winston';
-import { User } from '../database';
+import { User } from '../modules/database';
 
 let router = express.Router();
 

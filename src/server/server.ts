@@ -43,7 +43,7 @@ winston.add(winston.transports.Console, {
  * Connect to database
  * Info: See database.ts to configure settings
  */
- import { ConnectionString, InitializeDatabase } from './database';
+ import { ConnectionString, InitializeDatabase } from './modules/database';
 
  InitializeDatabase(ConnectionString);
 
