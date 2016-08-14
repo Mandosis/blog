@@ -78,40 +78,35 @@ export function InitializeDatabase(connection: string): void {
 
  export class User {
 
-   user = {
-     id: '',
-     email: '',
-     password: '',
-     name: '',
-     stored_id: '',
-     stored_email: '',
-     stored_password: '',
-     stored_name: ''
+   user: any = {};
+   private saved: any = {};
 
+   constructor (user: any, saved: any) {
+
+     if (saved.id != null || saved.id != '') {
+       this.saved = saved;
+       this.user = saved;
+     } else {
+       this.user = user;
+     }
    };
 
-   constructor (user) {
-     this.user.email = user.email;
-     this.user.password = user.password;
-     this.user.name = user.name;
-     this.user.id = user.stored_id || '';
-     this.user.stored_id = user.stored_id || '';
-     this.user.stored_email = user.stored_email || '';
-     this.user.stored_password = user.stored_password || '';
-     this.user.stored_name = user.stored_name || '';
-   };
-
+   /**
+    * Used to save a new user or update their information.
+    * Returns a Promise
+    */
    save() {
      let user = this.user;
+     let saved = this.saved;
 
      /**
       * Check if password was updated for password encryption
       */
-     if (user.stored_password == '' || user.stored_password != user.password) {
+     if (saved.password == null || saved.password != user.password) {
        user.password = EncryptPassword(user.password);
      }
 
-     if (user.stored_id == '') {
+     if (saved.id == '') {
 
        // Create new user
        return new Promise((resolve, reject) => {

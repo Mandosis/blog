@@ -4,7 +4,9 @@ import { User } from '../database';
 
 let router = express.Router();
 
-// Routes
+/**
+ * API Introduction
+ */
 router.get('/', (req,res) => {
   res.status(200).json({
     sucess: true,
@@ -12,12 +14,15 @@ router.get('/', (req,res) => {
   });
 });
 
+/**
+ * Create a new user
+ */
 router.post('/users', (req, res) => {
   let user = new User({
     email: req.body.email,
     password: req.body.password,
     name: req.body.name
-  });
+  }, null);
 
   user.save()
     .then(() => {
@@ -32,7 +37,7 @@ router.post('/users', (req, res) => {
         success: false,
         message: `Internal error`
       })
-    })
-})
+    });
+});
 
 export { router as ApiRoutes };
