@@ -1,13 +1,17 @@
 // the polyfills must be the first thing imported in node.js
 import 'angular2-universal/polyfills';
 
-import 'dotenv';
+require('dotenv').config();
+
 import * as express from 'express';
+import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as path from 'path';
 import * as winston from 'winston';
 import * as helmet from 'helmet';
+import * as passport from 'passport';
+import * as localStrategy from 'passport-local';
 
 import * as router from './routes/router';
 
@@ -62,8 +66,25 @@ app.use(cookieParser('Angular 2 Universal'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
+app.use(session({
+  secret: process.env.SECRET,
+  resave: true,
+  saveUninitialized: false,
+  cookie: {maxAge: ((60000 * 60) * 24) * 7, secure: false}
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-/*
+/**
+ * Configure Passport Authentication
+ */
+ // passport.use('local', localStrategy({
+ //   passReqToCallback: true,
+ //   usernameField: 'email'
+ // }, (req, username, password, done) => {
+ // }))
+
+/**
  * Set directories to serve static assets from
  */
 app.use(express.static(path.join(ROOT, 'public'), {index: false}));

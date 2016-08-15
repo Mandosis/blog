@@ -71,42 +71,84 @@ export function InitializeDatabase(connection: string): void {
   })
 };
 
+
+
+
+
+
 /**
- * Create a new user
- * Params: Accepts object containing username, password,
+ * Create or access user information
  */
 
  export class User {
 
-   user: any = {};
-   private saved: any = {};
+   findOne: (obj: any) => Promise<any>;
+   save: () => Promise<any>;
 
-   constructor (user: any, saved: any) {
+   id: number;
+   email: string;
+   password: string;
+   name: string;
 
-     if (saved.id != null || saved.id != '') {
-       this.saved = saved;
-       this.user = saved;
+   private _isSavedToDatabase: boolean;
+   private _id: number;
+   private _email: string;
+   private _password: string;
+   private _name: string;
+
+   constructor (user?: any, db?: boolean) {
+
+     if (db) {
+
+       this._isSavedToDatabase = true;
+
+       // Database Value
+       this._id = user.id;
+       this._email = user.email;
+       this._password = user.password;
+       this._name = user.name;
+
+       // User accessable values
+       this.id = user.id;
+       this.email = user.email;
+       this.password = user.password;
+       this.name = user.name;
+
+       // Add method to save user
+       this.save = this._save;
+
+     } else if (user) {
+
+       // Set user accessable values
+       this.email = user.email;
+       this.password = user.password;
+       this.name = user.name;
+
+       // Add method to save user
+       this.save = this._save;
      } else {
-       this.user = user;
+
+       // Since there is no user info, add the findOne method
+       this.findOne = this._findOne;
      }
    };
+
+
 
    /**
     * Used to save a new user or update their information.
     * Returns a Promise
     */
-   save() {
-     let user = this.user;
-     let saved = this.saved;
+   private _save() {
 
      /**
       * Check if password was updated for password encryption
       */
-     if (saved.password == null || saved.password != user.password) {
-       user.password = EncryptPassword(user.password);
+     if (this._password == null || this._password != this.password) {
+       this.password = EncryptPassword(this.password);
      }
 
-     if (saved.id == null) {
+     if (!this._isSavedToDatabase) {
 
        // Create new user
        return new Promise((resolve, reject) => {
@@ -114,7 +156,12 @@ export function InitializeDatabase(connection: string): void {
            if (err) {
              reject(err);
            } else {
-             let query = client.query(`INSERT INTO users(email, password, name) VALUES ($1, $2, $3)`, [ user.email, user.password, user.name]);
+
+             let query = client.query(`INSERT INTO users(email, password, name) VALUES ($1, $2, $3)`, [
+               this.email,
+               this.password,
+               this.name
+             ]);
 
              query.on('error', (err) => {
                reject(err);
@@ -141,7 +188,12 @@ export function InitializeDatabase(connection: string): void {
                 password = $2,
                 name = $3
                WHERE
-                id = $4;`, [ user.email, user.password, user.name, user.id ]);
+                id = $4;`, [
+                  this.email,
+                  this.password,
+                  this.name,
+                  this.id
+                ]);
 
              query.on('error', (err) => {
                reject(err);
@@ -155,51 +207,179 @@ export function InitializeDatabase(connection: string): void {
        });
 
      }
-   }
+   } // End of save()
+
+
+
+   /**
+    * Find a user
+    */
+    private _findOne(input) {
+
+      return new Promise((resolve, reject) => {
+
+        // Check if more than one key was supplied
+        if (this._getObjectSize(input) > 1) {
+          reject('More than one key supplied');
+        } else {
+
+          // Get name of key
+          let key: string = Object.keys(input)[0];
+          let value: string = input[key];
+          let results: Array<any> = [];
+
+          pg.connect(uri, (err, client) => {
+            if (err) {
+              reject(err);
+            }
+
+            let query = client.query(`
+              SELECT
+                *
+              FROM
+                users
+              WHERE
+                ${key} = $1`, [ value ]);
+
+            query.on('error', (err) => {
+              reject(err);
+            });
+
+            query.on('row', (row) => {
+              results.push(row);
+            });
+
+            query.on('end', () => {
+              resolve(results);
+            });
+          });
+        }
+
+      });
+    } // End of findOne
+
+    /**
+     * Count the number of keys in an object
+     */
+    private _getObjectSize(obj) {
+      let size = 0, key;
+      for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          size++;
+        }
+      }
+      return size;
+    };
+
  };
 
+
+
+
+
+
+ /**
+  * Create and access articles
+  */
 export class Article {
-  article: any = {};
 
-  // Used to check if values were changed
-  private saved: any = {};
+  findOne: (obj) => Promise<any>;
+  save: () => Promise<any>;
 
-  constructor (article: any, saved: any) {
-    if (saved.id != null || saved.id != '') {
-      this.saved = saved;
-      this.article = saved;
+  id: number;
+  title: string;
+  date: Date;
+  body: string;
+  tags: Array<number>;
+  cover_img: string;
+  url: string;
+  author_id: number;
+
+  private _isSavedToDatabase: boolean;
+  private _id: number;
+  private _title: string;
+  private _date: Date;
+  private _body: string;
+  private _tags: Array<number>;
+  private _cover_img: string;
+  private _url: string;
+  private _author_id: number;
+
+
+  constructor (article?: any, db?: boolean) {
+    if (db) {
+
+      this._isSavedToDatabase = true;
+
+      // Private
+      this._id = article.id;
+      this._title = article.title;
+      this._date = article.date;
+      this._body = article.body;
+      this._tags = article.tags;
+      this._cover_img = article.cover_img;
+      this._url = article.url;
+      this._author_id = article.author.id;
+
+      // Public
+      this.id = article.id;
+      this.title = article.title;
+      this.date = article.date;
+      this.body = article.body;
+      this.tags = article.tags;
+      this.cover_img = article.cover_img;
+      this.url = article.url;
+      this.author_id = article.author.id;
+
+      // Add save method
+      this.save = this._save;
+
+    } else if (article) {
+
+      // Public
+      this.id = article.id;
+      this.title = article.title;
+      this.date = article.date;
+      this.body = article.body;
+      this.tags = article.tags;
+      this.cover_img = article.cover_img;
+      this.author_id = article.author.id;
+
+      // Add save method
+      this.save = this._save;
+
     } else {
-      this.article = article;
+
+      // this.findOne = this._findOne();
     }
   }
 
-  save() {
-    let article = this.article;
-    let saved = this.saved;
+  private _save() {
 
-    if (saved.id == null) { // Means its a new article
+    if (!this._isSavedToDatabase) {
       return new Promise((resolve, reject) => {
         pg.connect(uri, (err, client) => {
           if (err) {
             reject(err);
           } else {
-            let query = client.query(`INSERT INTO articles(
-              title,
-              date,
-              body,
-              tags,
-              cover_img,
-              url,
-              author_id
-            )
-            VALUES ($1, $2, $3, $4, $5, $6, $7)`, [
-              article.title,
-              article.date,
-              article.body,
-              article.tags,
-              article.cover_img,
-              article.url,
-              article.author_id
+            let query = client.query(`
+              INSERT INTO articles(
+                title,
+                date,
+                body,
+                tags,
+                cover_img,
+                url,
+                author_id
+              )
+              VALUES ($1, $2, $3, $4, $5, $6, $7)`, [
+                this.title,
+                this.date,
+                this.body,
+                this.tags,
+                this.cover_img,
+                this.url,
+                this.author_id
             ]);
 
             query.on('error', (err) => {
@@ -229,11 +409,11 @@ export class Article {
                url = $5,
               WHERE
                id = $6;`, [
-                 article.title,
-                 article.body,
-                 article.tags,
-                 article.cover_img,
-                 article.url
+                 this.title,
+                 this.body,
+                 this.tags,
+                 this.cover_img,
+                 this.url
                ]);
 
             query.on('error', (err) => {

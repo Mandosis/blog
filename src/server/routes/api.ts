@@ -8,6 +8,15 @@ let router = express.Router();
  * API Introduction
  */
 router.get('/', (req,res) => {
+  let user = new User();
+  user.findOne({ email: 'test@test.com' })
+    .then((results) => {
+      winston.debug(results);
+    })
+    .error((err) => {
+      winston.error(err);
+    });
+    
   res.status(200).json({
     sucess: true,
     message: `Welcome to the blog api!`
