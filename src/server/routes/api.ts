@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as winston from 'winston';
-import { User } from '../modules/database';
+import { User, Article } from '../modules/database';
 
 let router = express.Router();
 
@@ -16,7 +16,7 @@ router.get('/', (req,res) => {
     .error((err) => {
       winston.error(err);
     });
-    
+
   res.status(200).json({
     sucess: true,
     message: `Welcome to the blog api!`
@@ -46,6 +46,34 @@ router.post('/users', (req, res) => {
         success: false,
         message: `Internal error`
       })
+    });
+});
+
+router.post('/articles', (req, res) => {
+  let article = new Article({
+    title: req.body.title,
+    date: new Date(),
+    body: req.body.body,
+    tags: req.body.tags,
+    cover_img: req.body.cover_img,
+    url: req.body.url,
+    author_id: req.body.author_id
+    // author_id: req.user.id
+    // TODO switch when authentication is working.
+  });
+
+  article.save()
+    .then(() => {
+      res.status(201).json({
+        success: true,
+        message: 'Article successfully saved.'
+      });
+    })
+    .error((err) => {
+      res.status(500).json({
+        success: false,
+        message: `Internal error`
+      });
     });
 });
 

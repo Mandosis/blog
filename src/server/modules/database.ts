@@ -278,9 +278,9 @@ export function InitializeDatabase(connection: string): void {
 
 
 
- /**
-  * Create and access articles
-  */
+/**
+ * Create and access articles
+ */
 export class Article {
 
   findOne: (obj) => Promise<any>;
