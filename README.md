@@ -6,7 +6,7 @@ This repository is for a developer focused blogging software that can be used to
 
 ### Development
 
-1. `git clone https://github.com/Mandosis/2MEAN.git`
+1. `git clone https://github.com/Mandosis/blog.git`
 2. `npm install`
 3. `npm start`
 
