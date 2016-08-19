@@ -1,15 +1,16 @@
 import * as express from 'express';
 import * as winston from 'winston';
-import { User, Article, Schema } from '../modules/database';
+import { User, Article, FindOne } from '../modules/database';
 
 let router = express.Router();
+let Find = new FindOne();
 
 /**
  * API Introduction
  */
 router.get('/', (req,res) => {
   let user = new User();
-  user.findOne({ email: 'test@test.com' })
+  Find.user({ email: 'test@test.com' })
     .then((results) => {
       winston.debug(results);
     })

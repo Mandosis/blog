@@ -82,7 +82,6 @@ export function InitializeDatabase(connection: string): void {
 
  export class User {
 
-   findOne: (obj: any) => Promise<any>;
    save: () => Promise<any>;
 
    id: number;
@@ -126,10 +125,6 @@ export function InitializeDatabase(connection: string): void {
 
        // Add method to save user
        this.save = this._save;
-     } else {
-
-       // Since there is no user info, add the findOne method
-       this.findOne = this._findOne;
      }
    };
 
@@ -209,67 +204,6 @@ export function InitializeDatabase(connection: string): void {
      }
    } // End of save()
 
-
-
-   /**
-    * Find a user
-    */
-    private _findOne(input) {
-
-      return new Promise((resolve, reject) => {
-
-        // Check if more than one key was supplied
-        if (this._getObjectSize(input) > 1) {
-          reject('More than one key supplied');
-        } else {
-
-          // Get name of key
-          let key: string = Object.keys(input)[0];
-          let value: string = input[key];
-          let results: Array<any> = [];
-
-          pg.connect(uri, (err, client) => {
-            if (err) {
-              reject(err);
-            }
-
-            let query = client.query(`
-              SELECT
-                *
-              FROM
-                users
-              WHERE
-                ${key} = $1`, [ value ]);
-
-            query.on('error', (err) => {
-              reject(err);
-            });
-
-            query.on('row', (row) => {
-              results.push(row);
-            });
-
-            query.on('end', () => {
-              resolve(results);
-            });
-          });
-        }
-
-      });
-    } // End of findOne
-
-    /**
-     * Count the number of keys in an object
-     */
-    private _getObjectSize(obj) {
-      let size = 0, key;
-      for (key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          size++;
-        }
-      }
-      return size;
-    };
 
  };
 
@@ -429,3 +363,76 @@ export class Article {
     }
   };
 };
+
+
+
+
+
+/**
+ * Find
+ */
+
+export class FindOne {
+  /**
+   * Find a user
+   */
+   public user(input) {
+
+     return new Promise((resolve, reject) => {
+
+       // Check if more than one key was supplied
+       if (this._getObjectSize(input) > 1) {
+         reject('More than one key supplied');
+       } else {
+
+         // Get name of key
+         let key: string = Object.keys(input)[0];
+         let value: string = input[key];
+         let results: Array<any> = [];
+
+         pg.connect(uri, (err, client) => {
+           if (err) {
+             reject(err);
+           }
+
+           let query = client.query(`
+             SELECT
+               *
+             FROM
+               users
+             WHERE
+               ${key} = $1`, [ value ]);
+
+           query.on('error', (err) => {
+             reject(err);
+           });
+
+           query.on('row', (row) => {
+             results.push(row);
+           });
+
+           query.on('end', () => {
+             resolve(results);
+           });
+         });
+       }
+
+     });
+   } // End of user
+
+
+
+   /**
+    * Count the number of keys in an object
+    */
+   private _getObjectSize(obj) {
+     let size = 0, key;
+     for (key in obj) {
+       if (obj.hasOwnProperty(key)) {
+         size++;
+       }
+     }
+     return size;
+   };
+
+}
