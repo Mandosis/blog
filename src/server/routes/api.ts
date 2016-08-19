@@ -9,13 +9,6 @@ let findOne = new FindOne();
  * API Introduction
  */
 router.get('/', (req,res) => {
-  findOne.user({ email: 'test@test.com' })
-    .then((results) => {
-      winston.debug(results);
-    })
-    .error((err) => {
-      winston.error(err);
-    });
 
   res.status(200).json({
     sucess: true,
