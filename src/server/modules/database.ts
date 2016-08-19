@@ -95,7 +95,7 @@ export function InitializeDatabase(connection: string): void {
    private _password: string;
    private _name: string;
 
-   constructor (user?: any, db?: boolean) {
+   constructor (user: any, db?: boolean) {
 
      if (db) {
 
@@ -412,7 +412,7 @@ export class FindOne {
            });
 
            query.on('end', () => {
-             resolve(results);
+             resolve(new User(results[0], true));
            });
          });
        }

@@ -3,14 +3,13 @@ import * as winston from 'winston';
 import { User, Article, FindOne } from '../modules/database';
 
 let router = express.Router();
-let Find = new FindOne();
+let findOne = new FindOne();
 
 /**
  * API Introduction
  */
 router.get('/', (req,res) => {
-  let user = new User();
-  Find.user({ email: 'test@test.com' })
+  findOne.user({ email: 'test@test.com' })
     .then((results) => {
       winston.debug(results);
     })
