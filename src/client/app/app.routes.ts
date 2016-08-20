@@ -10,6 +10,10 @@ import { EditorComponent } from './editor/editor.component';
 import { LoginComponent } from './login/login.component';
 
 export const routes: RouterConfig = [
+
+  /**
+   * App root
+   */
   {
     path: '',
     component: HomeComponent

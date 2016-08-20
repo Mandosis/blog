@@ -44,12 +44,18 @@ winston.add(winston.transports.Console, {
 });
 
 /*
- * Connect to database
+ * Check database connection
  * Info: See database.ts to configure settings
  */
- import { ConnectionString, InitializeDatabase } from './modules/database';
+import { Database } from './modules/database';
 
- InitializeDatabase(ConnectionString);
+Database.authenticate()
+  .then(() => {
+    winston.info('Successfully connected to database');
+  })
+  .catch((err) => {
+    winston.error(err);
+  })
 
 
 /*
