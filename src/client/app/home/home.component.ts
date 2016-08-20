@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styles: [ require('./home.component.scss') ]
 
 })
-export class Home {
+export class HomeComponent {
 }

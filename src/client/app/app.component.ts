@@ -7,9 +7,9 @@ import { Http } from '@angular/http';
   directives: [
     ROUTER_DIRECTIVES
   ],
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css']
+  template: require('./app.component.pug'),
+  styles: [ require('./app.component.scss') ]
 })
-export class App {
+export class AppComponent {
   title = 'app works!';
 }

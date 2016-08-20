@@ -3,12 +3,12 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
   selector: 'dashboard-home',
-  template: require('./home.component.pug'),
-  styles: [ require('./home.component.scss') ],
+  template: require('./dashboard-home.component.pug'),
+  styles: [ require('./dashboard-home.component.scss') ],
   directives: [ROUTER_DIRECTIVES]
 })
 
-export class DashboardHome {
+export class DashboardHomeComponent {
   title = 'Home';
 
   sayHello() {

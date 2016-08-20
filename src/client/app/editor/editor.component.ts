@@ -14,7 +14,7 @@ import { WordCount } from '../../word-count.pipe';
   ]
 })
 
-export class Editor {
+export class EditorComponent {
   post: Object = {
     title: 'Welcome to the Editor',
     body: '# Hello'

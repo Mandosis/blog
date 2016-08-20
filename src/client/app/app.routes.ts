@@ -1,14 +1,18 @@
 import { RouterConfig } from '@angular/router';
-import { Home } from './home/home.component';
-import { Dashboard } from './dashboard/dashboard.component';
-import { DashboardHome } from './dashboard/home/home.component';
-import { Editor } from './dashboard/editor/editor.component';
+
+// Public Site Components
+import { HomeComponent } from './home/home.component';
+
+// Dashboard Site Components
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
+import { EditorComponent } from './editor/editor.component';
 import { LoginComponent } from './login/login.component';
 
 export const routes: RouterConfig = [
   {
     path: '',
-    component: Home
+    component: HomeComponent
   },
 
   /**
@@ -16,10 +20,10 @@ export const routes: RouterConfig = [
    */
   {
     path: 'dashboard',
-    component: Dashboard,
+    component: DashboardComponent,
     children: [
-      { path: '', component: DashboardHome},
-      { path: 'editor', component: Editor }
+      { path: '', component: DashboardHomeComponent},
+      { path: 'editor', component: EditorComponent }
     ]
   },
 

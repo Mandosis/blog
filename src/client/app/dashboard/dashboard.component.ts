@@ -10,7 +10,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
   ]
 })
 
-export class Dashboard {
+export class DashboardComponent {
   title = 'dashboard';
   menuOpen: boolean = false;
 
