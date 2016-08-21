@@ -11,10 +11,12 @@ import * as path from 'path';
 import * as winston from 'winston';
 import * as helmet from 'helmet';
 import * as passport from 'passport';
-import * as localStrategy from 'passport-local';
+import * as passportLocal from 'passport-local';
 
-import * as router from './routes/router';
-
+import { Database } from './modules/database';
+import { User } from './models/user';
+import { Router } from './routes/router';
+import { ComparePassword } from './modules/encrypt';
 
 // Angular 2
 import { enableProdMode } from '@angular/core';
@@ -26,6 +28,7 @@ enableProdMode();
 
 const app = express();
 const ROOT = path.join(path.resolve(''));
+const localStrategy = passportLocal.Strategy;
 
 /*
  * Configure Winston
@@ -47,7 +50,6 @@ winston.add(winston.transports.Console, {
  * Check database connection
  * Info: See database.ts to configure settings
  */
-import { Database } from './modules/database';
 
 Database.authenticate()
   .then(() => {
@@ -84,11 +86,45 @@ app.use(passport.session());
 /**
  * Configure Passport Authentication
  */
- // passport.use('local', localStrategy({
- //   passReqToCallback: true,
- //   usernameField: 'email'
- // }, (req, username, password, done) => {
- // }))
+passport.use('local', new localStrategy({
+  passReqToCallback: true,
+  usernameField: 'username',
+  passwordField: 'password'
+}, (req, email, password, done) => {
+
+  User
+    .findOne({ where: { email: email} })
+    .then((user: any) => {
+
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username or password' });
+      }
+      if (ComparePassword(password, user.password)) {
+        return done(null, user);
+      } else {
+        return done(null, false, { message: 'Incorrect username or password' });
+      }
+    })
+    .catch((err) => {
+      done(err, false);
+    });
+
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User
+    .findById(id)
+    .then((user) => {
+      done(null, user);
+    })
+    .error((err) => {
+      done(err, null);
+    });
+})
 
 /**
  * Set directories to serve static assets from
@@ -99,9 +135,6 @@ app.use('/assets/js', express.static(path.join(ROOT, '/dist/client')));
 /*
  * Router
  */
-
-import { Router } from './routes/router';
-
 app.use('/', Router);
 
 /*

@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as winston from 'winston';
+import * as passport from 'passport';
 import { User } from '../models/user';
 import { Article } from '../models/article';
 import { EncryptPassword } from '../modules/encrypt';
@@ -16,6 +17,43 @@ router.get('/', (req,res) => {
     message: `Welcome to the blog api!`
   });
 });
+
+router.post('/auth', passport.authenticate('local', { session: true }), (req, res) => {
+    if (req.user) {
+      res.status(200).json({
+        success: true,
+        message: 'User authenticated'
+      });
+    } else {
+      res.status(200).json({
+        success: false,
+        message: 'Username or password incorrect'
+      });
+    }
+});
+
+
+
+
+/**
+ * Check to see if user is authenticated
+ */
+router.use((req, res, next) => {
+  if (!req.user) {
+    res.status(401).json({
+      success: false,
+      message: 'Not authenticated'
+    });
+  } else {
+    next();
+  }
+});
+
+router.get('/users', (req, res) => {
+  res.status(200).json({
+    message: 'Well hello there!'
+  })
+})
 
 /**
  * Create a new user
@@ -44,5 +82,6 @@ router.post('/users', (req, res) => {
 
 router.post('/articles', (req, res) => {
 });
+
 
 export { router as ApiRoutes };
