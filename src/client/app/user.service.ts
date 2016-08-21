@@ -37,7 +37,7 @@ export class UserService {
       });
   };
 
-  get isAuthenticated() {
+  isAuthenticated() {
     return this.loggedIn;
   };
 };

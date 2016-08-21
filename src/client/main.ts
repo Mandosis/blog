@@ -6,12 +6,14 @@ import { HTTP_PROVIDERS } from '@angular/http';
 // Application
 import { AppComponent } from './app/app.component';
 import { UserService } from './app/user.service';
+import { AuthGuard } from './app/auth.guard';
 import { routes } from './app/app.routes';
 
 export function ngApp() {
   return bootstrap(AppComponent, [
     HTTP_PROVIDERS,
     UserService,
+    AuthGuard,
     provideRouter(routes)
   ]);
 }
