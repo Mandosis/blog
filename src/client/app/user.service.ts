@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 @Injectable()
 
 export class UserService {
-  private isAuthenticated: boolean = false;
+  private loggedIn: boolean = false;
 
   constructor(private http: Http) {};
 
@@ -16,24 +16,28 @@ export class UserService {
 
         // Set status of user
         if (res.success) {
-          this.isAuthenticated = true;
+          this.loggedIn = true;
         } else {
-          this.isAuthenticated = false;
+          this.loggedIn = false;
         }
 
         return res.success;
-      })
+      });
   };
 
 
   logout() {
-    this.isAuthenticated = false;
+    this.loggedIn = false;
 
     return this.http
       .get('/auth')
       .map(res => res.json())
       .map((res) => {
         return res.success;
-      })
-  }
+      });
+  };
+
+  get isAuthenticated() {
+    return this.loggedIn;
+  };
 };

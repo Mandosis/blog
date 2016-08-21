@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'login',
@@ -9,4 +10,8 @@ import { Component } from '@angular/core';
 export class LoginComponent {
   username = '';
   password = '';
+
+  constructor(private userService: UserService) {};
+
+  
 }
