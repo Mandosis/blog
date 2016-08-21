@@ -18,6 +18,9 @@ router.get('/', (req,res) => {
   });
 });
 
+/**
+ * Authenticate Users
+ */
 router.post('/auth', passport.authenticate('local', { session: true }), (req, res) => {
     if (req.user) {
       res.status(200).json({
@@ -36,7 +39,8 @@ router.post('/auth', passport.authenticate('local', { session: true }), (req, re
 
 
 /**
- * Check to see if user is authenticated
+ * Protected Routes
+ * Description: A user must be logged in to access the below routes
  */
 router.use((req, res, next) => {
   if (!req.user) {
