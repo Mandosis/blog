@@ -5,9 +5,12 @@ import { UserService } from './user.service';
 @Injectable()
 
 export class AuthGuard implements CanActivate {
-  constructor(private user: UserService) {};
+  constructor(private user: UserService, private router: Router) {};
 
   canActivate() {
+    if (!this.user.isAuthenticated()) {
+      this.router.navigate(['/login']);
+    }
     return this.user.isAuthenticated();
   }
 }

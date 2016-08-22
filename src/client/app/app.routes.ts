@@ -1,5 +1,8 @@
 import { RouterConfig } from '@angular/router';
 
+// Authentication Guard
+import { AuthGuard } from './auth.guard';
+
 // Public Site Components
 import { HomeComponent } from './home/home.component';
 
@@ -25,6 +28,7 @@ export const routes: RouterConfig = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: DashboardHomeComponent},
       { path: 'editor', component: EditorComponent }
