@@ -21,6 +21,21 @@ router.get('/', (req,res) => {
 /**
  * Authenticate Users
  */
+router.get('/auth', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.status(200).json({
+      success: true,
+      message: 'User authenticated',
+      data: req.user
+    })
+  } else {
+    res.status(200).json({
+      success: false,
+      message: 'User not authenticated'
+    })
+  }
+});
+
 router.post('/auth', passport.authenticate('local', { session: true }), (req, res) => {
     if (req.user) {
       res.status(200).json({
