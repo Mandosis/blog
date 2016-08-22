@@ -7,7 +7,7 @@ import {enableProdMode} from '@angular/core';
 import {prebootComplete} from 'angular2-universal';
 
 // enable prod for faster renders
-enableProdMode();
+// enableProdMode();
 
 import {ngApp} from './main';
 

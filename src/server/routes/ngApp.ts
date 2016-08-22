@@ -13,6 +13,8 @@ import { APP_BASE_HREF } from '@angular/common';
 // Application
 import { AppComponent } from '../../client/app/app.component';
 import {routes} from '../../client/app/app.routes';
+import { UserService } from '../../client/app/user.service';
+import { AuthGuard } from '../../client/app/auth.guard';
 
 export function ngApp(req, res) {
   let baseUrl = '/';
@@ -29,6 +31,8 @@ export function ngApp(req, res) {
     providers: [
       {provide: REQUEST_URL, useValue: url},
       NODE_HTTP_PROVIDERS,
+      UserService,
+      AuthGuard,
       provideRouter(routes),
       NODE_LOCATION_PROVIDERS
     ],

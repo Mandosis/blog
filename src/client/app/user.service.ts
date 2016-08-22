@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 
 @Injectable()
 
@@ -8,9 +8,12 @@ export class UserService {
 
   constructor(private http: Http) {};
 
-  login(email: string, password: string) {
+  login(username: string, password: string) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
     return this.http
-      .post('/v1/auth', JSON.stringify({ email, password }))
+      .post('/v1/auth', JSON.stringify({username, password}), { headers })
       .map(res => res.json())
       .map((res) => {
 
@@ -20,6 +23,8 @@ export class UserService {
         } else {
           this.loggedIn = false;
         }
+
+        console.log(this.loggedIn);
 
         return res.success;
       });
