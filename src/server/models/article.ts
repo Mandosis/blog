@@ -1,5 +1,6 @@
 import { Database } from '../modules/database';
 import { User } from './user';
+import { Tag } from './tag';
 import * as Sequelize from 'sequelize';
 
 let Article = Database.define('articles', {
@@ -10,8 +11,7 @@ let Article = Database.define('articles', {
 });
 
 Article.hasOne(User, { foreignKey: 'authorId'});
-
-// TODO add tags
+Article.hasMany(Tag);
 
 Article.sync();
 
