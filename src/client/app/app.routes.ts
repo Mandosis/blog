@@ -39,7 +39,7 @@ export const routes: RouterConfig = [
    * Login Page
    */
    {
-     path: 'login',
+     path: 'dashboard/signin',
      component: LoginComponent
    },
 

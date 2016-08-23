@@ -5,10 +5,18 @@ import 'rxjs/add/operator/take';
 @Injectable()
 
 export class UserService {
-  private email: string;
-  private name: string;
+  private _email: string;
+  private _name: string;
 
   constructor(private http: Http) {};
+
+  get email() {
+    return this._email
+  };
+
+  get name(){
+    return this._name;
+  };
 
   login(username: string, password: string) {
     let headers = new Headers();
@@ -29,9 +37,13 @@ export class UserService {
       .map(res => res.json())
       .map((res) => {
         return res.success;
-      });
+      })
   };
 
+  /**
+   * Check authentication status with server
+   * Returns Observable<boolean>
+   */
   isAuthenticated() {
     return this.http
       .get('/v1/auth')
@@ -39,8 +51,8 @@ export class UserService {
       .map((res) => {
 
         if (res.success) {
-          this.email = res.data.email;
-          this.name = res.data.name;
+          this._email = res.data.email;
+          this._name = res.data.name;
         }
 
         return res.success;

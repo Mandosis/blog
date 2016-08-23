@@ -1,7 +1,9 @@
-input(type="text" name="username" placeholder="email@example.com" "[(ngModel)]"="email")
+main
+  form
+    input(type="text" name="username" placeholder="Email Address" "[(ngModel)]"="email")
 
-input(type="password" name="password" placeholder="" "[(ngModel)]"="password")
+    input(type="password" name="password" placeholder="Password" "[(ngModel)]"="password")
 
-button(type="submit" "(click)"="login()") login
+    input(type="submit" "(click)"="login()" value="Sign In")
 
-//- p("[innerHtml]"="error")
+  p(style="color: red") {{error}}
