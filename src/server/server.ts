@@ -13,6 +13,7 @@ import * as helmet from 'helmet';
 import * as passport from 'passport';
 import * as passportLocal from 'passport-local';
 
+import { Setup } from './modules/setup';
 import { Database } from './modules/database';
 import { User } from './models/user';
 import { Router } from './routes/router';
@@ -58,6 +59,14 @@ Database.authenticate()
   .catch((err) => {
     winston.error(err);
   })
+
+/**
+ * Run setup
+ */
+if (process.argv[2] == 'setup') {
+  winston.remove(winston.transports.Console);
+  Setup.start();
+}
 
 
 /*

@@ -99,8 +99,32 @@ router.post('/users', (req, res) => {
     });
 });
 
+/**
+ * Create an article
+ */
 router.post('/articles', (req, res) => {
+  Article
+    .create({
+      title: req.body.title,
+      body: req.body.body,
+      cover: req.body.cover,
+      url: req.body.url
+    })
+    .then(() => {
+      res.status(201).json({
+        success: true,
+        message: 'Article created successfully'
+      })
+    })
+    .catch((err) => {
+      winston.error(err);
+      res.status(500).json({
+        success: false,
+        message: 'Internal error'
+      })
+    });
 });
+
 
 
 export { router as ApiRoutes };

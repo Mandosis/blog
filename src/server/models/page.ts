@@ -8,8 +8,6 @@ let Page = Database.define('pages', {
   url: sequelize.TEXT
 });
 
-Page.hasOne(User, { foreignKey: 'authorId'});
-
 Page.sync();
 
 export { Page };

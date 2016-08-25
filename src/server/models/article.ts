@@ -10,9 +10,6 @@ let Article = Database.define('articles', {
   url: { type: Sequelize.TEXT, allowNull: false }
 });
 
-Article.hasOne(User, { foreignKey: 'authorId'});
-Article.hasMany(Tag);
-
 Article.sync();
 
 export { Article };
