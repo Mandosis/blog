@@ -28,6 +28,8 @@ class Setup {
       rl.question('Password: ', (answer) => {
         this._password = answer;
 
+        console.log(`Email: ${this._email}\nPassword: ${this._password}`);
+
         rl.close();
       });
 
