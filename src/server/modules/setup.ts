@@ -1,4 +1,3 @@
-import { EncryptPassword } from './encrypt';
 import { User } from './models';
 
 const prompt = require('prompt');
@@ -45,6 +44,7 @@ class Setup {
     prompt.message = '';
   	prompt.delimiter = ':';
 
+
     prompt.get(this._accountQuestions, (err, result) => {
       if (err) {
         console.log(err);
@@ -53,7 +53,7 @@ class Setup {
         User
           .create({
             email: result.email,
-            password: EncryptPassword(result.password),
+            password: result.password,
             name: result.name
           })
           .then(() => {

@@ -3,7 +3,6 @@ import * as winston from 'winston';
 import * as passport from 'passport';
 import { User } from '../models/user';
 import { Article } from '../models/article';
-import { EncryptPassword } from '../modules/encrypt';
 
 let router = express.Router();
 
@@ -81,7 +80,7 @@ router.post('/users', (req, res) => {
   User
     .create({
       email: req.body.email,
-      password: EncryptPassword(req.body.password),
+      password: req.body.password,
       name: req.body.name
     })
     .then(() => {
