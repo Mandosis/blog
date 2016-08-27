@@ -1,11 +1,34 @@
-import * as readline from 'readline';
 import { EncryptPassword } from './encrypt';
 import { User } from './models';
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+const prompt = require('prompt');
+
+let questions = {
+  properties: {
+    name: {
+      pattern: /^[a-zA-Z\s\-]+$/,
+      message: 'Name must be only letters, spaces, or dashes',
+      description: 'Name displayed on blog posts',
+      required: true
+    },
+    email: {
+      name: 'email',
+      description: 'Admin email address',
+      format: 'email',
+      message: 'Must be a valid email address'
+    },
+    password: {
+      description: 'Admin password',
+      hidden: true,
+      required: true
+    },
+    confirmPassword: {
+      description: 'Confirm password',
+      hidden: true,
+      required: true
+    }
+  }
+}
 
 class Setup {
 
@@ -20,24 +43,18 @@ class Setup {
       Welcome!
     `);
 
-    console.log(`Setup the admin account`);
+    console.log(`Account creation`);
 
-    rl.question('Email: ', (answer) => {
-      this._email = answer;
+    prompt.start();
+    prompt.message = '';
+  	prompt.delimiter = ':';
 
-      rl.question('Password: ', (answer) => {
-        this._password = answer;
-
-        console.log(`Email: ${this._email}\nPassword: ${this._password}`);
-
-        rl.close();
-      });
-
-
-      rl.close();
-    });
-
+    prompt.get(questions, (err, result) => {
+      console.log(result);
+    })
   };
+
+  
 
 }
 
