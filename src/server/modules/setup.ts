@@ -7,7 +7,7 @@ class Setup {
   private _email: string;
   private _password: string;
 
-  private _accountQuestions = {
+  private _questions = {
     properties: {
       name: {
         pattern: /^[a-zA-Z\s\-]+$/,
@@ -34,40 +34,47 @@ class Setup {
    */
   start() {
 
-    console.log(`
-      Welcome!
-    `);
+    this._printIntro();
+    this._askQuestions();
 
+  };
+
+  private _printIntro(): void {
+    console.log(`Setup`);
+  }
+
+  private _askQuestions() {
     console.log(`Account creation`);
 
     prompt.start();
     prompt.message = '';
-  	prompt.delimiter = ':';
+    prompt.delimiter = ':';
 
-
-    prompt.get(this._accountQuestions, (err, result) => {
+    prompt.get(this._questions, (err, result) => {
       if (err) {
         console.log(err);
       } else {
-
-        User
-          .create({
-            email: result.email,
-            password: result.password,
-            name: result.name
-          })
-          .then(() => {
-            console.log('Admin user created successfully.');
-            process.exit();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        this._createUser(result.email, result.password, result.name);
       }
+    });
+  }
 
+  private _createUser(email, password, name) {
+    User
+      .create({
+        email: email,
+        password: password,
+        name: name
+      })
+      .then(() => {
+        console.log('Admin user created successfully.');
+        process.exit();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    })
-  };
+  }
 
 
 }
