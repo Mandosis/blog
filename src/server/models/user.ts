@@ -1,5 +1,5 @@
 import { Database } from '../modules/database';
-import { Encrypt } from '../modules/encrypt';
+import { Encrypt, ComparePassword } from '../modules/encrypt';
 import * as Sequelize from 'sequelize';
 
 let User = Database.define('users', {
@@ -9,10 +9,19 @@ let User = Database.define('users', {
 });
 
 User.beforeCreate((user: any) => {
-  return Encrypt(user.password)
-    .then((hash) => {
+  return Encrypt(user.password).then((hash) => {
+    user.password = hash;
+  });
+});
+
+User.beforeUpdate((user: any) => {
+  if (!user.changed('password')) {
+    return;
+  } else {
+    return Encrypt(user.password).then((hash) => {
       user.password = hash;
     });
+  }
 });
 
 User.sync();
