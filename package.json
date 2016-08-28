@@ -51,6 +51,7 @@
     "prompt": "^1.0.0",
     "rxjs": "5.0.0-beta.6",
     "sequelize": "^3.24.1",
+    "speakingurl": "^9.0.0",
     "winston": "^2.2.0",
     "zone.js": "^0.6.12"
   },

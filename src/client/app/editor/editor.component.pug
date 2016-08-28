@@ -27,4 +27,4 @@ aside("[class.open]"="viewSettings")
   input(type="text" disabled)
 
   p url
-  input(type="url" "[attr.value]"="toUrl(post.title)")
+  input(type="url" "[attr.value]"="post.title | url")

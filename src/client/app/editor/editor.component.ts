@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { MarkdownPipe} from '../markdown.pipe';
 import { WordCount } from '../word-count.pipe';
+import { SpeakingurlPipe } from '../speakingurl.pipe';
 
 @Component({
   selector: 'editor',
@@ -10,7 +11,8 @@ import { WordCount } from '../word-count.pipe';
   directives: [ ROUTER_DIRECTIVES ],
   pipes: [
     MarkdownPipe,
-    WordCount
+    WordCount,
+    SpeakingurlPipe
   ]
 })
 
@@ -29,12 +31,5 @@ export class EditorComponent {
     } else {
       this.viewSettings = true;
     }
-  }
-
-  toUrl(input: string): string {
-    return input
-      .toLowerCase()
-      .replace(/[^\w ]+/g,'')
-      .replace(/ +/g,'-');
   }
 }
