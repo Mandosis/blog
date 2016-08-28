@@ -30,4 +30,11 @@ export class EditorComponent {
       this.viewSettings = true;
     }
   }
+
+  toUrl(input: string): string {
+    return input
+      .toLowerCase()
+      .replace(/[^\w ]+/g,'')
+      .replace(/ +/g,'-');
+  }
 }
