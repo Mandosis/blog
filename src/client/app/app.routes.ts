@@ -28,7 +28,7 @@ export const routes: RouterConfig = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { path: '', component: DashboardHomeComponent},
       { path: 'editor', component: EditorComponent }

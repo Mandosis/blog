@@ -1,8 +1,10 @@
 header
   input(type="text" "[(ngModel)]"="post.title")
   button Publish
+  button("(click)"="extendSettings()") open
 
-section
+
+section("(click)"="viewSettings = false")
   p Hello from the {{title}}!
 
   textarea( "[(ngModel)]"="post.body" )
@@ -15,3 +17,14 @@ footer
   section.right
     p.name Preview
     p.count Word Count: {{post.body | wordCount }}
+
+aside("[class.open]"="viewSettings")
+
+  p Cover Image
+  input(type="file" disabled)
+
+  p Tags
+  input(type="text" disabled)
+
+  p url
+  input(type="text")

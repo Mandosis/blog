@@ -15,9 +15,19 @@ import { WordCount } from '../word-count.pipe';
 })
 
 export class EditorComponent {
+  viewSettings: boolean = false;
+
   post: Object = {
     title: 'Welcome to the Editor',
     body: '# Hello'
   }
   title: string = 'Editor';
+
+  extendSettings(): void {
+    if (this.viewSettings) {
+      this.viewSettings = false;
+    } else {
+      this.viewSettings = true;
+    }
+  }
 }

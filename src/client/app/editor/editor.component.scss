@@ -126,6 +126,45 @@ footer {
   }
 }
 
+aside {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  right: -300px;
+  padding: 20px;
+  background: #FFF;
+  border-left: 1px solid $primary-border;
+  box-shadow: -4px 0px 14px 0px rgba(50, 50, 50, 0.25);
+  transition: right 0.6s;
+
+  input {
+    display: block;
+    padding: 0.7em 1em;
+    border: 1px solid #dfe1e3;
+    border-radius: 4px;
+    color: #666;
+    font-size: 1.0em;
+    font-weight: 100;
+    user-select: text;
+    transition: border-color .15s linear;
+    -webkit-appearance: none;
+    margin-bottom: 15px;
+    width: calc(100% - 2.1em);
+
+    &:focus {
+      outline: 0;
+      border-color: #b1b1b1;
+    }
+  }
+
+}
+
+.open {
+  right: 0;
+}
+
 @media screen and (max-width: 991px) {
   header {
     width: calc(100% - 80px);
