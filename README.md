@@ -8,7 +8,8 @@ This repository is for a developer focused blogging software that can be used to
 
 1. `git clone https://github.com/Mandosis/blog.git`
 2. `npm install`
-3. `npm start`
+3. `npm run setup`
+4. `npm start`
 
 ### Build for production
 
