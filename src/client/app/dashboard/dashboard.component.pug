@@ -2,8 +2,9 @@ header
   button("(click)"="extendMenu()") open
 
 nav("[class.open]"="menuOpen")
-  section
-    | View Blog
+  a("[routerLink]"="['../']")
+    section
+      | View Blog
 
 main("(click)"="menuOpen = false")
   router-outlet
