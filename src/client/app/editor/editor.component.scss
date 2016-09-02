@@ -2,8 +2,8 @@ $primary-border: #EEE;
 
 header {
   height: 60px;
-  width: calc(100% - 40px - 251px);
-  position: fixed;
+  width: calc(100% - 40px);
+  position: absolute;
   right: 0;
   top: 0;
   background: #FFF;

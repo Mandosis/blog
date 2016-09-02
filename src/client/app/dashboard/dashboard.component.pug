@@ -1,10 +1,12 @@
+//- Mobile
 header
   button("(click)"="extendMenu()") open
 
-nav("[class.open]"="menuOpen")
+nav("[class.open]"="menuOpen" "[class.collapse-sidebar]"="menuCollapsed")
+  button("(click)"="toggleNavWidth()") open
   a("[routerLink]"="['../']")
     section
       | View Blog
 
-main("(click)"="menuOpen = false")
+main("(click)"="menuOpen = false" "[class.extend-content]"="menuCollapsed")
   router-outlet

@@ -50,7 +50,19 @@ button {
 
 @media screen and (min-width: 992px) {
   button {
-    display: none;
+    display: inline;
+  }
+
+  nav, main {
+    transition: width 0.6s;
+  }
+
+  .collapse-sidebar {
+    width: 80px;
+  }
+
+  .extend-content {
+    width: calc(100% - 81px - 40px); // Full width - navbar w/ border - padding
   }
 }
 

@@ -1,5 +1,5 @@
-header("(click)"="viewSettings = false")
-  input(type="text" "[(ngModel)]"="post.title")
+header
+  input(type="text" "[(ngModel)]"="post.title" "(click)"="viewSettings = false")
   button Publish
   button("(click)"="extendSettings()") open
 
