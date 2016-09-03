@@ -1,9 +1,11 @@
 //- Mobile
 header
-  button("(click)"="extendMenu()") open
+  button.publish("(click)"="extendMenu()")
+    i.fa.fa-navicon
 
 nav("[class.open]"="menuOpen" "[class.collapse-sidebar]"="menuCollapsed")
-  button("(click)"="toggleNavWidth()") open
+  button("(click)"="toggleNavWidth()")
+    i.fa.fa-navicon
   a("[routerLink]"="['../']")
     section
       | View Blog

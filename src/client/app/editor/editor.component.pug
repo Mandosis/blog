@@ -1,7 +1,8 @@
 header
   input(type="text" "[(ngModel)]"="post.title" "(click)"="viewSettings = false")
-  button Publish
-  button("(click)"="extendSettings()") open
+  button.publish Publish
+  button.settings("(click)"="extendSettings()")
+    i.fa.fa-cog
 
 
 section("(click)"="viewSettings = false")

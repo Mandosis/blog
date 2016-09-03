@@ -13,8 +13,7 @@ module.exports = {
       { test: /\.css$/, loader: 'raw-loader' },
       { test: /\.json$/, loader: 'raw-loader' },
       { test: /\.scss$/, exclude: /node_modules/, loaders: ['raw-loader', 'sass-loader'] },
-      { test: /\.pug$/, loader: 'pug-html-loader' },
-      { test: /\.woff|\.woff2|\.svg|.eot|\.ttf/, loader: 'file' },\
+      { test: /\.pug$/, loader: 'pug-html-loader' }
     ],
     preLoaders: [
       // needed to lower the filesize of angular due to inline source-maps

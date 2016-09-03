@@ -19,7 +19,7 @@ header {
 
   input {
     height: 58px;
-    width: calc(100% - 110px);
+    width: calc(100% - 150px);
     border: none;
     outline: none;
     font-weight: bold;
@@ -32,7 +32,7 @@ section {
   width: 100%;
 }
 
-button {
+.publish {
   padding: 3px;
   border: 1px solid rgb(42, 112, 194);
   background: rgb(15, 154, 223);
@@ -45,7 +45,7 @@ button {
   margin-top: 10px;
   outline: none;
   display: inline-block;
-  right: 20px;
+  right: 60px;
 }
 
 .preview {
@@ -163,6 +163,19 @@ aside {
 
 .open {
   right: 0;
+}
+
+.settings {
+  padding: 10px 25px;
+  color: #444;
+  position: absolute;
+  top: 12px;
+  right: 0px;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 1em;
 }
 
 @media screen and (max-width: 991px) {
