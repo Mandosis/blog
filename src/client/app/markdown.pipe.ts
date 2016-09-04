@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizationService } from '@angular/platform-browser';
 import * as marked from 'marked';
 
 @Pipe({
@@ -6,7 +7,8 @@ import * as marked from 'marked';
 })
 
 export class MarkdownPipe implements PipeTransform {
+  constructor(private _sanitizer: DomSanitizationService) {}
   transform(value: string) {
-    return marked(value);
+    return this._sanitizer.bypassSecurityTrustHtml(marked(value));
   }
 }

@@ -11,21 +11,19 @@ section("(click)"="viewSettings = false")
   ul.controls("(mousedown)"="$event.preventDefault()")
     li
       i.fa.fa-header
-    li("(click)"="setBold()")
+    li("(click)"="formatSelected('**')")
       i.fa.fa-bold
-    li
+    li("(click)"="formatSelected('_')")
       i.fa.fa-italic
-    li
-      i.fa.fa-underline
-    li
+    li("(click)"="formatSelected('~~')")
       i.fa.fa-strikethrough
     li
       i.fa.fa-list-ol
     li
       i.fa.fa-list-ul
-    li
+    li("(click)"="insertSyntax('[]()')")
       i.fa.fa-link
-    li
+    li("(click)"="insertSyntax('![]()')")
       i.fa.fa-picture-o
 
   textarea( "[(ngModel)]"="post.body" "(select)"="getSelected($event)" "(keydown)"="setCursorPosition($event)" "(mousedown)"="setCursorPosition($event)" )

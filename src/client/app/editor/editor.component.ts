@@ -51,23 +51,17 @@ export class EditorComponent {
     this.isSelected = false;
     let editor = event.target;
 
-    // console.log('selectionStart:', editor.selectionStart + '\nselectionEnd:', editor.selectionEnd);
-
     this.cursorPosition = editor.selectionStart;
 
-    console.log('Cursor Position:', this.cursorPosition);
   }
 
-  setBold() {
-
-    console.log('isSelected', this.isSelected);
+  formatSelected(syntax:string) {
 
     if (!this.isSelected) {
       let beforeSelection = (this.post.body).substring(0, this.cursorPosition);
       let afterSelection = (this.post.body).substring(this.cursorPosition, this.post.body.length);
-      let boldSyntax = '****';
 
-      let completedString = beforeSelection + boldSyntax + afterSelection;
+      let completedString = beforeSelection + syntax + syntax + afterSelection;
 
       this.post.body = completedString;
 
@@ -76,12 +70,19 @@ export class EditorComponent {
       let afterSelection = (this.post.body).substring(this.selectionEnd, this.post.body.length);
       let selection = (this.post.body).substring(this.selectionStart, this.selectionEnd)
 
-      let boldSelection = '**' + selection + '**';
-
-      let completedString = beforeSelection + boldSelection + afterSelection;
+      let completedString = beforeSelection + syntax + selection + syntax + afterSelection;
 
       this.post.body = completedString;
 
     }
+  }
+
+  insertSyntax(syntax: string) {
+    let beforeSelection = (this.post.body).substring(0, this.cursorPosition);
+    let afterSelection = (this.post.body).substring(this.cursorPosition, this.post.body.length);
+
+    let completedString = beforeSelection + afterSelection + `\n${syntax}\n`;
+
+    this.post.body = completedString;
   }
 }
