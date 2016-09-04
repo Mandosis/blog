@@ -17,7 +17,7 @@ section("(click)"="viewSettings = false")
       i.fa.fa-italic
     li("(click)"="formatSelected('~~')")
       i.fa.fa-strikethrough
-    li
+    li("(click)"="setCaretPosition()")
       i.fa.fa-list-ol
     li
       i.fa.fa-list-ul
@@ -26,7 +26,7 @@ section("(click)"="viewSettings = false")
     li("(click)"="insertSyntax('![]()')")
       i.fa.fa-picture-o
 
-  textarea( "[(ngModel)]"="post.body" "(select)"="getSelected($event)" "(keydown)"="setCursorPosition($event)" "(mousedown)"="setCursorPosition($event)" )
+  textarea( "[(ngModel)]"="post.body" "(select)"="getSelected($event)" "(keydown)"="getCaretPosition($event)" "(mousedown)"="getCaretPosition($event)" "(change)"="getCaretPosition($event)" )
 
   section( class="preview" "[innerHtml]"="post.body | markdown")
 

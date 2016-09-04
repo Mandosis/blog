@@ -47,7 +47,7 @@ export class EditorComponent {
     this.selectionEnd = editor.selectionEnd;
   }
 
-  setCursorPosition(event: any) {
+  getCaretPosition(event: any) {
     this.isSelected = false;
     let editor = event.target;
 
@@ -58,8 +58,10 @@ export class EditorComponent {
   formatSelected(syntax:string) {
 
     if (!this.isSelected) {
-      let beforeSelection = (this.post.body).substring(0, this.cursorPosition);
-      let afterSelection = (this.post.body).substring(this.cursorPosition, this.post.body.length);
+      let editor = document.getElementsByTagName('textarea')[0];
+
+      let beforeSelection = (this.post.body).substring(0, editor.selectionStart);
+      let afterSelection = (this.post.body).substring(editor.selectionEnd, this.post.body.length);
 
       let completedString = beforeSelection + syntax + syntax + afterSelection;
 
@@ -75,6 +77,7 @@ export class EditorComponent {
       this.post.body = completedString;
 
     }
+
   }
 
   insertSyntax(syntax: string) {
@@ -85,4 +88,5 @@ export class EditorComponent {
 
     this.post.body = completedString;
   }
+
 }
