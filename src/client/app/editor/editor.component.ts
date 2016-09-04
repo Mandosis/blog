@@ -51,9 +51,11 @@ export class EditorComponent {
     this.isSelected = false;
     let editor = event.target;
 
+    // console.log('selectionStart:', editor.selectionStart + '\nselectionEnd:', editor.selectionEnd);
+
     this.cursorPosition = editor.selectionStart;
 
-    console.log('Curosor Position:', this.cursorPosition);
+    console.log('Cursor Position:', this.cursorPosition);
   }
 
   setBold() {
@@ -61,16 +63,17 @@ export class EditorComponent {
     console.log('isSelected', this.isSelected);
 
     if (!this.isSelected) {
-      let beforeSelection = (this.post.body).substring(0, this.cursorPosition - 1);
-      let afterSelection = (this.post.body).substring(this.cursorPosition + 1, this.post.body.length);
+      let beforeSelection = (this.post.body).substring(0, this.cursorPosition);
+      let afterSelection = (this.post.body).substring(this.cursorPosition, this.post.body.length);
       let boldSyntax = '****';
 
       let completedString = beforeSelection + boldSyntax + afterSelection;
 
       this.post.body = completedString;
+
     } else {
-      let beforeSelection = (this.post.body).substring(0, this.selectionStart - 1);
-      let afterSelection = (this.post.body).substring(this.selectionEnd + 1, this.post.body.length);
+      let beforeSelection = (this.post.body).substring(0, this.selectionStart);
+      let afterSelection = (this.post.body).substring(this.selectionEnd, this.post.body.length);
       let selection = (this.post.body).substring(this.selectionStart, this.selectionEnd)
 
       let boldSelection = '**' + selection + '**';
