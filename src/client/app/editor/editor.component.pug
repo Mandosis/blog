@@ -8,7 +8,27 @@ header
 section("(click)"="viewSettings = false")
   p Hello from the {{title}}!
 
-  textarea( "[(ngModel)]"="post.body" )
+  ul.controls("(mousedown)"="$event.preventDefault()")
+    li
+      i.fa.fa-header
+    li("(click)"="setBold()")
+      i.fa.fa-bold
+    li
+      i.fa.fa-italic
+    li
+      i.fa.fa-underline
+    li
+      i.fa.fa-strikethrough
+    li
+      i.fa.fa-list-ol
+    li
+      i.fa.fa-list-ul
+    li
+      i.fa.fa-link
+    li
+      i.fa.fa-picture-o
+
+  textarea( "[(ngModel)]"="post.body" "(select)"="getSelected($event)" "(keydown)"="setCursorPosition($event)" "(mousedown)"="setCursorPosition($event)" )
 
   section( class="preview" "[innerHtml]"="post.body | markdown")
 

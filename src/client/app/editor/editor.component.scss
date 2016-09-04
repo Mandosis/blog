@@ -61,9 +61,42 @@ section {
   word-wrap: break-word;
 }
 
+.controls {
+  width: calc(100% / 2);
+  height: 40px;
+  background: #F5F5F5;
+  position: absolute;
+  left: 0;
+  top: 61px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+
+
+  li {
+    list-style: none;
+    height: 40px;
+    width: 100%;
+    flex-direction: row;
+    background: #F8F8F8;
+    display: inline-block;
+    text-align: center;
+    transition: background 0.2s ease-in;
+    cursor: pointer;
+
+    &:hover {
+      background: #FDFDFD;
+    }
+
+    i {
+      padding-top: 10px;
+    }
+  }
+}
+
 textarea {
   width: calc(100% / 2 - 40px);
-  height: calc(100vh - 61px - 81px);
+  height: calc(100vh - 61px - 81px - 40px);
   overflow-x: hidden;
   overflow-y: scroll;
   position: absolute;
@@ -137,7 +170,7 @@ aside {
   background: #FFF;
   border-left: 1px solid $primary-border;
   box-shadow: -4px 0px 14px 0px rgba(50, 50, 50, 0.25);
-  transition: right 0.6s;
+  transition: right 0.4s;
 
   input {
     display: block;
