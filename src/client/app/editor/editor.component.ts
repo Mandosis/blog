@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { MarkdownPipe} from '../markdown.pipe';
 import { WordCount } from '../word-count.pipe';
@@ -16,7 +16,7 @@ import { SpeakingurlPipe } from '../speakingurl.pipe';
   ]
 })
 
-export class EditorComponent {
+export class EditorComponent implements OnInit {
   viewSettings: boolean = false;
   isSelected: boolean = false;
   selectionStart: number;
@@ -84,7 +84,7 @@ export class EditorComponent {
     let beforeSelection = (this.post.body).substring(0, this.cursorPosition);
     let afterSelection = (this.post.body).substring(this.cursorPosition, this.post.body.length);
 
-    let completedString = beforeSelection + afterSelection + `\n${syntax}\n`;
+    let completedString = beforeSelection + afterSelection + `\n${syntax}`;
 
     this.post.body = completedString;
   }
