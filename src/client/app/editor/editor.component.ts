@@ -55,8 +55,15 @@ export class EditorComponent implements OnInit {
 
   }
 
-  formatSelected(syntax:string) {
+  insertSyntax(syntax: string, wrap: boolean): void {
+    if (wrap) {
+      this._insertWrappingSyntax(syntax);
+    } else {
+      this._insertNonWrappingSyntax(syntax);
+    }
+  }
 
+  private _insertWrappingSyntax(syntax: string): void {
     if (!this.isSelected) {
       let editor = document.getElementsByTagName('textarea')[0];
 
@@ -84,7 +91,7 @@ export class EditorComponent implements OnInit {
 
   }
 
-  insertSyntax(syntax: string) {
+  private _insertNonWrappingSyntax(syntax: string): void {
     let beforeSelection = (this.post.body).substring(0, this.cursorPosition);
     let afterSelection = (this.post.body).substring(this.cursorPosition, this.post.body.length);
 

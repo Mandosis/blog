@@ -14,33 +14,33 @@ section("(click)"="viewSettings = false")
 
       //- Choose heading level
       ul.dropdown
-        li("(click)"="insertSyntax('# ')")
+        li("(click)"="insertSyntax('# ', false)")
           span H1
-        li("(click)"="insertSyntax('## ')")
+        li("(click)"="insertSyntax('## ', false)")
           span H2
-        li("(click)"="insertSyntax('### ')")
+        li("(click)"="insertSyntax('### ', false)")
           span H3
-        li("(click)"="insertSyntax('#### ')")
+        li("(click)"="insertSyntax('#### ', false)")
           span H4
-        li("(click)"="insertSyntax('##### ')")
+        li("(click)"="insertSyntax('##### ', false)")
           span H5
-        li("(click)"="insertSyntax('###### ')")
+        li("(click)"="insertSyntax('###### ', false)")
           span H6
 
     //- Bold
-    li("(click)"="formatSelected('**')")
+    li("(click)"="insertSyntax('**', true)")
       i.fa.fa-bold
 
     //- Italic
-    li("(click)"="formatSelected('_')")
+    li("(click)"="insertSyntax('_', true)")
       i.fa.fa-italic
 
     //- Strikethrough
-    li("(click)"="formatSelected('~~')")
+    li("(click)"="insertSyntax('~~', true)")
       i.fa.fa-strikethrough
 
     //- Ordered List
-    li("(click)"="setCaretPosition()")
+    li
       i.fa.fa-list-ol
 
     //- Unordered List
@@ -48,11 +48,11 @@ section("(click)"="viewSettings = false")
       i.fa.fa-list-ul
 
     //- Link
-    li("(click)"="insertSyntax('[]()')")
+    li("(click)"="insertSyntax('[]()', false)")
       i.fa.fa-link
 
     //- Picture
-    li("(click)"="insertSyntax('![]()')")
+    li("(click)"="insertSyntax('![]()', false)")
       i.fa.fa-picture-o
 
   //- Editor Body
