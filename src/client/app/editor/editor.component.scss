@@ -99,7 +99,9 @@ section {
       margin-top: 13px;
       box-shadow: 0px 3px 5px 0px rgba(50, 50, 50, 0.30);
       padding: 0;
-      display: none;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.1s ease;
 
       li {
         background: none;
@@ -150,7 +152,8 @@ section {
       height: 38px;
 
       .dropdown {
-        display: block;
+        visibility: visible;
+        opacity: 1;
       }
     }
 
