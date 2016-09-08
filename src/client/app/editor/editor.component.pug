@@ -14,29 +14,29 @@ section("(click)"="viewSettings = false")
 
       //- Choose heading level
       ul.dropdown
-        li("(click)"="insertSyntax('# ', false)")
+        li("(click)"="insertSyntax('# ', 'nowrap')")
           span H1
-        li("(click)"="insertSyntax('## ', false)")
+        li("(click)"="insertSyntax('## ', 'nowrap')")
           span H2
-        li("(click)"="insertSyntax('### ', false)")
+        li("(click)"="insertSyntax('### ', 'nowrap')")
           span H3
-        li("(click)"="insertSyntax('#### ', false)")
+        li("(click)"="insertSyntax('#### ', 'nowrap')")
           span H4
-        li("(click)"="insertSyntax('##### ', false)")
+        li("(click)"="insertSyntax('##### ', 'nowrap')")
           span H5
-        li("(click)"="insertSyntax('###### ', false)")
+        li("(click)"="insertSyntax('###### ', 'nowrap')")
           span H6
 
     //- Bold
-    li("(click)"="insertSyntax('**', true)")
+    li("(click)"="insertSyntax('**', 'wrap')")
       i.fa.fa-bold
 
     //- Italic
-    li("(click)"="insertSyntax('_', true)")
+    li("(click)"="insertSyntax('_', 'wrap')")
       i.fa.fa-italic
 
     //- Strikethrough
-    li("(click)"="insertSyntax('~~', true)")
+    li("(click)"="insertSyntax('~~', 'wrap')")
       i.fa.fa-strikethrough
 
     //- Ordered List
@@ -44,18 +44,21 @@ section("(click)"="viewSettings = false")
       i.fa.fa-list-ol
 
     //- Unordered List
-    li
+    li("(click)"="insertSyntax('-', 'list')")
       i.fa.fa-list-ul
 
     //- Link
-    li("(click)"="insertSyntax('[]()', false)")
+    li("(click)"="insertSyntax('[]()', 'nowrap')")
       i.fa.fa-link
 
     //- Picture
-    li("(click)"="insertSyntax('![]()', false)")
+    li("(click)"="insertSyntax('![]()', 'nowrap')")
       i.fa.fa-picture-o
 
   //- Editor Body
+
+  //- TODO: Wrap in section and dynamically add textareas and CodeMirror editors
+  //-       that target a textarea
   textarea( autofocus "[(ngModel)]"="post.body" "(select)"="getSelected($event)" "(keydown)"="getCaretPosition($event)" "(mousedown)"="getCaretPosition($event)" "(change)"="getCaretPosition($event)")
 
   //- Preview

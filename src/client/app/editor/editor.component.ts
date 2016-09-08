@@ -16,12 +16,13 @@ import { SpeakingurlPipe } from '../speakingurl.pipe';
   ]
 })
 
-export class EditorComponent implements OnInit {
+export class EditorComponent {
   viewSettings: boolean = false;
   isSelected: boolean = false;
   selectionStart: number;
   selectionEnd: number;
   cursorPosition: number;
+  listFormat: string;
 
   post = {
     title: 'Welcome to the Editor',
@@ -55,11 +56,19 @@ export class EditorComponent implements OnInit {
 
   }
 
-  insertSyntax(syntax: string, wrap: boolean): void {
-    if (wrap) {
-      this._insertWrappingSyntax(syntax);
-    } else {
-      this._insertNonWrappingSyntax(syntax);
+  insertSyntax(syntax: string, type: string): void {
+    switch(type.toLowerCase()) {
+      case 'wrap':
+        this._insertWrappingSyntax(syntax);
+        break;
+      case 'nowrap':
+        this._insertNonWrappingSyntax(syntax);
+        break;
+      case 'list':
+        this._insertListSyntax(syntax);
+        break;
+      default:
+        this._insertNonWrappingSyntax(syntax);
     }
   }
 
@@ -98,6 +107,62 @@ export class EditorComponent implements OnInit {
     let completedString = beforeSelection + afterSelection + `\n${syntax}`;
 
     this.post.body = completedString;
+  }
+
+  private _insertListSyntax(syntax: string): void {
+    let editor = document.getElementsByTagName('textarea')[0];
+    let currentLine = this._getCurrentLine();
+
+    let beforeCurrentLine = (editor.value).substring(0, currentLine.start);
+    let afterCurrentLine = (editor.value).substring(currentLine.end, editor.value.length);
+
+
+    let completedString = beforeCurrentLine + syntax + ' ' + currentLine.value + afterCurrentLine;
+
+    // console.log(completedString.replace(/(\n)/g, '\\n'));
+    console.log('After Current Line:', afterCurrentLine.replace(/(\n)/g, '\\n'));
+
+    // FIX ngModel not updating until user input in textarea (possible fix: bind value of textarea instead of model)
+    // FIX syntax inserting at end of line if there is content below
+
+    editor.value = completedString;
+
+    if (currentLine.isEmpty) {
+      console.log('Line is empty');
+    } else {
+      console.log('Line contains symbols');
+    }
+
+
+  }
+
+  private _getCurrentLine() {
+    let editor = document.getElementsByTagName('textarea')[0];
+    let lineStart: number;
+    let lineEnd: number;
+
+    // Get text before caret
+    for(lineStart = editor.selectionStart; lineStart >= 0 && editor.value[lineStart] != '\n'; --lineStart);
+
+    // Get text after the caret
+    for(lineEnd = editor.selectionEnd; lineEnd < editor.value.length && editor.value[lineEnd] != '\n'; ++lineEnd);
+
+    // Get substring of current line
+    let currentLine = (editor.value).substring(lineStart, lineEnd);
+
+    // Adjust for new lines
+    if (/(\n)/g.test(currentLine)) {
+      currentLine = currentLine.replace(/(\n)/g, '');
+      lineStart++;
+    }
+
+    return {
+      start: lineStart,
+      end: lineEnd,
+      value: currentLine,
+      isEmpty: (/\s/g.test(currentLine) && !/\S/g.test(currentLine))
+    };
+
   }
 
 }
