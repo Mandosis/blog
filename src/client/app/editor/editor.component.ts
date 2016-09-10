@@ -121,6 +121,7 @@ export class EditorComponent {
 
     // console.log(completedString.replace(/(\n)/g, '\\n'));
     console.log('After Current Line:', afterCurrentLine.replace(/(\n)/g, '\\n'));
+    console.log('Current Line Value:', currentLine.value.replace(/(\n)/g, '\\n'));
 
     // FIX ngModel not updating until user input in textarea (possible fix: bind value of textarea instead of model)
     // FIX syntax inserting at end of line if there is content below
@@ -152,8 +153,19 @@ export class EditorComponent {
 
     // Adjust for new lines
     if (/(\n)/g.test(currentLine)) {
+
+      if (/^(\n)/g.test(currentLine)) {
+        console.log('Line starts with \\n')
+        lineStart++;
+      }
+
+      if (/$(\n)/g.test(currentLine)) {
+        console.log('Line ends with \\n');
+        lineEnd--;
+      }
+
       currentLine = currentLine.replace(/(\n)/g, '');
-      lineStart++;
+
     }
 
     return {
