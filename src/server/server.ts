@@ -1,5 +1,4 @@
-// the polyfills must be the first thing imported in node.js
-import 'angular2-universal/polyfills';
+import 'angular2-universal-polyfills/node';
 
 require('dotenv').config();
 
@@ -22,10 +21,11 @@ import { ComparePassword } from './modules/encrypt';
 // Angular 2
 import { enableProdMode } from '@angular/core';
 // Angular 2 Universal
-import { expressEngine } from 'angular2-universal';
+import { createEngine } from 'angular2-express-engine';
 
 // enable prod for faster renders
 enableProdMode();
+
 
 const app = express();
 const ROOT = path.join(path.resolve(''));
@@ -72,9 +72,9 @@ if (process.argv[2] == 'setup') {
 /*
  * Configure Express.js rendering engine
  */
-app.engine('.html', expressEngine);
-app.set('views', path.join(ROOT, '/public/views'));
-app.set('view engine', 'html');
+ app.engine('.html', createEngine({}));
+ app.set('views', path.join(ROOT, '/public/views'));
+ app.set('view engine', 'html');
 
 /*
  * Configure Middleware
@@ -130,7 +130,7 @@ passport.deserializeUser((id, done) => {
     .then((user) => {
       done(null, user);
     })
-    .error((err) => {
+    .catch((err) => {
       done(err, null);
     });
 })
@@ -148,7 +148,7 @@ app.use('/', Router);
 
 /*
  * Server
- * Info: Runs on port 3000 if not set via environment variable
+ * Info: Runs  port 3000 if not set via environment variable
  */
 let server = app.listen(process.env.PORT || 3000, () => {
   winston.info(`Listening at http://localhost:${server.address().port}`);

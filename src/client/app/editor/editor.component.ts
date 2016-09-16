@@ -1,19 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { MarkdownPipe} from '../markdown.pipe';
-import { WordCount } from '../word-count.pipe';
-import { SpeakingurlPipe } from '../speakingurl.pipe';
 
 @Component({
   selector: 'editor',
   template: require('./editor.component.pug'),
   styles: [ require('./editor.component.scss') ],
-  directives: [ ROUTER_DIRECTIVES ],
-  pipes: [
-    MarkdownPipe,
-    WordCount,
-    SpeakingurlPipe
-  ]
 })
 
 export class EditorComponent {
@@ -29,6 +19,12 @@ export class EditorComponent {
     body: '# Hello'
   }
   title: string = 'Editor';
+
+  caret: any = {
+    selectionStart: 0,
+    selectionEnd: 0,
+    move: false
+  };
 
   extendSettings(): void {
     if (this.viewSettings) {
@@ -81,20 +77,23 @@ export class EditorComponent {
 
       let completedString = beforeSelection + syntax + syntax + afterSelection;
 
+      this.caret.selectionStart = editor.selectionStart;
+      this.caret.selectionEnd = editor.selectionEnd;
+      this.caret.move = true;
+
       // The value of the textarea must be set directly to move caret;
       // this.post.body = completedString;
-
       editor.value = completedString;
-      editor.setSelectionRange(editor.selectionStart - syntax.length, editor.selectionEnd - syntax.length);
 
     } else {
       let beforeSelection = (this.post.body).substring(0, this.selectionStart);
       let afterSelection = (this.post.body).substring(this.selectionEnd, this.post.body.length);
-      let selection = (this.post.body).substring(this.selectionStart, this.selectionEnd)
+      let selection = (this.post.body).substring(this.selectionStart, this.selectionEnd);
 
       let completedString = beforeSelection + syntax + selection + syntax + afterSelection;
 
       this.post.body = completedString;
+
 
     }
 
@@ -127,6 +126,8 @@ export class EditorComponent {
     // FIX syntax inserting at end of line if there is content below
 
     editor.value = completedString;
+
+    this.post.body = editor.value;
 
     if (currentLine.isEmpty) {
       console.log('Line is empty');
@@ -175,6 +176,23 @@ export class EditorComponent {
       isEmpty: (/\s/g.test(currentLine) && !/\S/g.test(currentLine))
     };
 
+  }
+
+  updateCaretPosition(event) {
+
+    console.log('event',event);
+
+    this.post.body = this.post.body;
+
+    if (this.caret.move) {
+
+      console.log('moving caret position...');
+      let editor = document.getElementsByTagName('textarea')[0];
+
+      editor.setSelectionRange(this.caret.selectionStart, this.caret.selectionEnd);
+
+      this.caret.move = false;
+    }
   }
 
 }

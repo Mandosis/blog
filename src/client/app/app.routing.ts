@@ -1,4 +1,5 @@
-import { RouterConfig } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
 // Authentication Guard
 import { AuthGuard } from './auth.guard';
@@ -12,7 +13,7 @@ import { DashboardHomeComponent } from './dashboard-home/dashboard-home.componen
 import { EditorComponent } from './editor/editor.component';
 import { LoginComponent } from './login/login.component';
 
-export const routes: RouterConfig = [
+const appRoutes: Routes = [
 
   /**
    * App root
@@ -51,3 +52,5 @@ export const routes: RouterConfig = [
     redirectTo: ''
   }
 ];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

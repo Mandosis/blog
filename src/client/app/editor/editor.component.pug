@@ -59,7 +59,7 @@ section("(click)"="viewSettings = false")
 
   //- TODO: Wrap in section and dynamically add textareas and CodeMirror editors
   //-       that target a textarea
-  textarea( autofocus "[(ngModel)]"="post.body" "(select)"="getSelected($event)" "(keydown)"="getCaretPosition($event)" "(mousedown)"="getCaretPosition($event)" "(change)"="getCaretPosition($event)")
+  textarea( autofocus "[(ngModel)]"="post.body" "(ngModelChange)"="updateCaretPosition($event)" "(select)"="getSelected($event)" "(keydown)"="getCaretPosition($event)" "(mousedown)"="getCaretPosition($event)" "(change)"="getCaretPosition($event)")
 
   //- Preview
   section( class="preview" "[innerHtml]"="post.body | markdown")

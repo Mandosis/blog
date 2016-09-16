@@ -6,13 +6,9 @@ const helpers = require('./helpers');
 
 clientConfig = {
   target: 'web',
-  entry: {
-    polyfills: '../src/client/polyfills.ts',
-    // vendor: '../src/client/vendor.ts',
-    main: '../src/client/client.ts'
-  },
+  entry: '../src/client/client',
   output: {
-    filename: '[name].js',
+    filename: 'client.min.js',
     path: helpers.root('../dist/client')
   },
   node: {
