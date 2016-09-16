@@ -1,4 +1,4 @@
-import { MainModule } from '../../client/main.node';
+import { MainModule } from '../../client/main';
 
 
 export function ngApp(req, res, next) {
