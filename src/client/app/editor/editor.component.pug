@@ -55,14 +55,27 @@ section("(click)"="viewSettings = false")
     li("(click)"="insertSyntax('![]()', 'nowrap')")
       i.fa.fa-picture-o
 
+    //- Code Editor
+    li("(click)"="insertCodeEditor()")
+      i.fa.fa-code
+
   //- Editor Body
 
   //- TODO: Wrap in section and dynamically add textareas and CodeMirror editors
   //-       that target a textarea
-  textarea( autofocus "[(ngModel)]"="post.body" "(ngModelChange)"="updateCaretPosition($event)" "(select)"="getSelected($event)" "(keydown)"="getCaretPosition($event)" "(mousedown)"="getCaretPosition($event)" "(change)"="getCaretPosition($event)")
+  //- textarea( autofocus "[(ngModel)]"="post.body" "(ngModelChange)"="updateCaretPosition($event)" "(select)"="getSelected($event)" "(keydown)"="getCaretPosition($event)" "(mousedown)"="getCaretPosition($event)" "(change)"="getCaretPosition($event)")
 
+  section.editor
+    div.input("*ngFor"="let input of inputs")
+      textarea("[(ngModel)]"="input.value" "*ngIf"="input.type == 'markdown'" "(keydown)"="autoResizeTextarea($event)" )
+      code-editor("[(ngModel)]"="input.value" "*ngIf"="input.type == 'code'"  "[config]"="{ lineNumbers: true, mode: input.language}")
+    //-
   //- Preview
-  section( class="preview" "[innerHtml]"="post.body | markdown")
+  section.preview
+    div("*ngFor"="let input of inputs")
+      span("*ngIf"="input.type == 'markdown'" "[innerHtml]"="input.value | markdown")
+      pre("*ngIf"="input.type == 'code'" "[ngClass]"="addLanguageClass(input)" "[attr.data-title]"="input.language")
+        code("[ngClass]"="addLanguageClass(input)" "[innerHtml]"="input.value | prism:input.language")
 
 footer("(click)"="viewSettings = false")
   section.left

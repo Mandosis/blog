@@ -14,13 +14,28 @@
       "body-parser",
       "compression",
       "cookie-parser",
+      "dotenv",
       "express",
       "express-serve-static-core",
+      "express-session",
+      "helmet",
+      "lodash",
+      "marked",
       "mime",
       "node",
-      "serve-static"
+      "passport",
+      "passport-local",
+      "pg",
+      "sequelize",
+      "serve-static",
+      "winston"
     ]
   },
+  "filesGlob": [
+      "**/*.ts",
+      "**/*.tsx",
+      "!node_modules/**"
+  ],
   "exclude": [
     "node_modules"
   ],

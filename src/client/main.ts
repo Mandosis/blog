@@ -18,6 +18,7 @@ import { LoginComponent } from './app/login/login.component';
 import { MarkdownPipe } from './app/markdown.pipe';
 import { SpeakingurlPipe } from './app/speakingurl.pipe';
 import { WordCountPipe } from './app/word-count.pipe';
+import { PrismPipe } from './app/prism.pipe';
 
 // Services
 import { UserService } from './app/user.service.ts'
@@ -25,12 +26,16 @@ import { UserService } from './app/user.service.ts'
 // Routing
 import { routing } from './app/app.routing';
 
+// Modules
+import { CodeEditorModule } from './app/code-editor/code-editor.module';
+
 @NgModule({
   bootstrap: [ AppComponent ],
   imports: [
     UniversalModule,
     FormsModule,
-    routing
+    routing,
+    CodeEditorModule,
   ],
   declarations: [
     // Components
@@ -44,7 +49,8 @@ import { routing } from './app/app.routing';
     // Pipes
     MarkdownPipe,
     SpeakingurlPipe,
-    WordCountPipe
+    WordCountPipe,
+    PrismPipe
 
   ],
   providers: [

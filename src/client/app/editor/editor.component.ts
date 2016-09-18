@@ -14,6 +14,11 @@ export class EditorComponent {
   cursorPosition: number;
   listFormat: string;
 
+  inputs: Array<Object> = [{
+    value: '# Hello',
+    type: 'markdown'
+  }];
+
   post = {
     title: 'Welcome to the Editor',
     body: '# Hello'
@@ -193,6 +198,35 @@ export class EditorComponent {
 
       this.caret.move = false;
     }
+  }
+
+  insertCodeEditor() {
+    this.inputs.push({
+      type:'code',
+      value: '',
+      language: 'javascript'
+    });
+
+    this.inputs.push({
+      type: 'markdown',
+      value: ''
+    })
+  }
+
+  autoResizeTextarea(event) {
+    let textarea = event.srcElement;
+
+    textarea.style.height = '5px';
+    textarea.style.height = (textarea.scrollHeight) + 'px';
+  }
+
+  addLanguageClass(input) {
+    console.log(input);
+    let css = {};
+
+    css['language-' + input.language] = true;
+
+    return css;
   }
 
 }
