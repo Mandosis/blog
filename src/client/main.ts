@@ -28,6 +28,7 @@ import { routing } from './app/app.routing';
 
 // Modules
 import { CodeEditorModule } from './app/code-editor/code-editor.module';
+import { MarkdownEditorModule } from './app/markdown-editor/markdown-editor.module';
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -36,6 +37,7 @@ import { CodeEditorModule } from './app/code-editor/code-editor.module';
     FormsModule,
     routing,
     CodeEditorModule,
+    MarkdownEditorModule
   ],
   declarations: [
     // Components

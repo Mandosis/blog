@@ -89,6 +89,9 @@ export class EditorComponent {
       // The value of the textarea must be set directly to move caret;
       // this.post.body = completedString;
       editor.value = completedString;
+      editor.blur();
+      editor.focus();
+      editor.setSelectionRange(editor.selectionStart - syntax.length, editor.selectionEnd - syntax.length);
 
     } else {
       let beforeSelection = (this.post.body).substring(0, this.selectionStart);
