@@ -220,18 +220,6 @@ export class EditorComponent {
   }
 
   /**
-   * Automatically resizes textareas inside the editor
-   */
-  autoResizeTextarea(event) {
-    let textarea = event.target;
-
-    textarea.style.overflow = 'hidden';
-    textarea.rows = 1;
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
-  }
-
-  /**
    * Adds a language class to pre and code elements for syntax highlighting
    */
   addLanguageClass(input) {
@@ -250,7 +238,7 @@ export class EditorComponent {
 
     let textAreaList: NodeListOf<HTMLTextAreaElement> = element.getElementsByTagName('textarea');
     let lastTextArea = textAreaList[textAreaList.length - 1];
-    
+
     // Prevent error when clicking on the last text area
     if (lastTextArea) {
       lastTextArea.focus();

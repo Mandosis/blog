@@ -14,7 +14,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'markdown-editor',
-  template: `<textarea #host ></textarea>`,
+  template: `<textarea #host (input)="autoResizeTextarea($event)"></textarea>`,
   styles: [ require('./markdown-editor.component.scss')],
   encapsulation: ViewEncapsulation.None,
   providers: [
@@ -81,6 +81,19 @@ export class MarkdownEditorComponent {
       this.host.nativeElement.value = this._value;
     }
   }
+
+  /**
+   * Automatically resizes textareas inside the editor
+   */
+  autoResizeTextarea(event) {
+    let textarea = event.target;
+
+    textarea.style.overflow = 'hidden';
+    textarea.rows = 1;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
 
   onChange(_) {};
   onTouched() {};
