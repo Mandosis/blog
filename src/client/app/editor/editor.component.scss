@@ -162,6 +162,7 @@ section {
   bottom: 41px;
   flex-direction: column;
   display: flex;
+  cursor: text;
 
   .input {
     width: calc(100% - 40px);

@@ -200,6 +200,9 @@ export class EditorComponent {
     }
   }
 
+  /**
+   * Inserts a code editor with a text area after
+   */
   insertCodeEditor() {
     this.inputs.push({
       type:'code',
@@ -213,6 +216,9 @@ export class EditorComponent {
     })
   }
 
+  /**
+   * Automatically resizes textareas inside the editor
+   */
   autoResizeTextarea(event) {
     let textarea = event.target;
 
@@ -222,13 +228,30 @@ export class EditorComponent {
     textarea.style.height = textarea.scrollHeight + 'px';
   }
 
+  /**
+   * Adds a language class to pre and code elements for syntax highlighting
+   */
   addLanguageClass(input) {
-    console.log(input);
     let css = {};
 
     css['language-' + input.language] = true;
 
     return css;
+  }
+
+  /**
+   * Puts focus on the last input in the editor if the user clicks on container
+   */
+  focusLastInput(event) {
+    let element: HTMLDivElement = event.target;
+
+    let textAreaList: NodeListOf<HTMLTextAreaElement> = element.getElementsByTagName('textarea');
+    let lastTextArea = textAreaList[textAreaList.length - 1];
+    
+    // Prevent error when clicking on the last text area
+    if (lastTextArea) {
+      lastTextArea.focus();
+    }
   }
 
 }

@@ -61,7 +61,7 @@ section("(click)"="viewSettings = false")
 
   //- Editor Body
 
-  section.editor
+  section.editor("(click)"="focusLastInput($event)")
     div.input("*ngFor"="let input of inputs")
       textarea( "[(ngModel)]"="input.value" "*ngIf"="input.type == 'markdown'" "(input)"="autoResizeTextarea($event)" )
       code-editor("[(ngModel)]"="input.value" "*ngIf"="input.type == 'code'"  "[config]"="{ lineNumbers: true, mode: input.language}")
