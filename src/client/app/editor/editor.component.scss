@@ -155,7 +155,7 @@ section {
   width: calc(100% / 2);
   height: calc(100vh - 61px - 81px);
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: absolute;
   left: 0;
   padding: 0;

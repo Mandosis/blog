@@ -21,7 +21,7 @@ import { WordCountPipe } from './app/word-count.pipe';
 import { PrismPipe } from './app/prism.pipe';
 
 // Services
-import { UserService } from './app/user.service.ts'
+import { UserService } from './app/user.service';
 
 // Routing
 import { routing } from './app/app.routing';
@@ -50,7 +50,7 @@ import { CodeEditorModule } from './app/code-editor/code-editor.module';
     MarkdownPipe,
     SpeakingurlPipe,
     WordCountPipe,
-    PrismPipe
+    PrismPipe,
 
   ],
   providers: [

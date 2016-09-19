@@ -61,15 +61,11 @@ section("(click)"="viewSettings = false")
 
   //- Editor Body
 
-  //- TODO: Wrap in section and dynamically add textareas and CodeMirror editors
-  //-       that target a textarea
-  //- textarea( autofocus "[(ngModel)]"="post.body" "(ngModelChange)"="updateCaretPosition($event)" "(select)"="getSelected($event)" "(keydown)"="getCaretPosition($event)" "(mousedown)"="getCaretPosition($event)" "(change)"="getCaretPosition($event)")
-
   section.editor
     div.input("*ngFor"="let input of inputs")
-      textarea("[(ngModel)]"="input.value" "*ngIf"="input.type == 'markdown'" "(keydown)"="autoResizeTextarea($event)" )
+      textarea( "[(ngModel)]"="input.value" "*ngIf"="input.type == 'markdown'" "(input)"="autoResizeTextarea($event)" )
       code-editor("[(ngModel)]"="input.value" "*ngIf"="input.type == 'code'"  "[config]"="{ lineNumbers: true, mode: input.language}")
-    //-
+
   //- Preview
   section.preview
     div("*ngFor"="let input of inputs")

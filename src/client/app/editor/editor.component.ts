@@ -214,10 +214,12 @@ export class EditorComponent {
   }
 
   autoResizeTextarea(event) {
-    let textarea = event.srcElement;
+    let textarea = event.target;
 
-    textarea.style.height = '5px';
-    textarea.style.height = (textarea.scrollHeight) + 'px';
+    textarea.style.overflow = 'hidden';
+    textarea.rows = 1;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
   }
 
   addLanguageClass(input) {
