@@ -254,4 +254,18 @@ export class EditorComponent {
     }
   }
 
+  /**
+   * Syncronise scrolling position for both the editor and the preview
+   */
+  syncScrollPosition(element) {
+    let editor: Element = document.getElementsByClassName('editor')[0];
+    let preview: Element = document.getElementsByClassName('preview')[0];
+
+    let scrollTopPercent: number = editor.scrollTop / editor.scrollHeight;
+    let scrollLeftPercent: number = editor.scrollLeft / editor.scrollWidth;
+
+    preview.scrollTop = preview.scrollHeight * scrollTopPercent;
+    preview.scrollLeft = preview.scrollWidth * scrollLeftPercent;
+
+  }
 }
