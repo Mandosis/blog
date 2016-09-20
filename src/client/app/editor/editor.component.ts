@@ -94,7 +94,7 @@ export class EditorComponent {
       target.focus();
 
       // Moves caret position
-      target.setSelectionRange(target.selectionStart - syntax.length, target.selectionEnd - syntax.length);
+      target.setSelectionRange(selectionStart + syntax.length, selectionEnd + syntax.length);
 
     } else {
       let beforeSelection = (inputValue).substring(0, selectionStart);
@@ -104,21 +104,45 @@ export class EditorComponent {
       let completedString = beforeSelection + syntax + selection + syntax + afterSelection;
 
       target.value = completedString;
-
       // Update model
       target.blur();
       target.focus();
+
+      // Moves caret position
+      target.setSelectionRange(selectionEnd + (syntax.length * 2), selectionEnd + (syntax.length * 2));
+
     }
 
   }
 
   private _insertNonWrappingSyntax(syntax: string): void {
-    let beforeSelection = (this.post.body).substring(0, this.cursorPosition);
-    let afterSelection = (this.post.body).substring(this.cursorPosition, this.post.body.length);
+
+    let inputIndex = this.focusedInput.index;
+    let inputValue = this.inputs[inputIndex].value;
+    let selectionStart = this.focusedInput.selectionStart;
+    let selectionEnd = this.focusedInput.selectionEnd;
+
+    // Get all code-editor and markdown-editor elements
+    let nodeList: NodeListOf<Element> = document.querySelectorAll('code-editor, markdown-editor');
+
+    // Get the focused element
+    let markdownInput: Element = nodeList[this.focusedInput.index];
+
+    // Get the textarea inside
+    let target: HTMLTextAreaElement = markdownInput.getElementsByTagName('textarea')[0];
+
+    let beforeSelection = (inputValue).substring(0, selectionStart);
+    let afterSelection = (inputValue).substring(selectionEnd, inputValue.length);
 
     let completedString = beforeSelection + afterSelection + `\n${syntax}`;
 
-    this.post.body = completedString;
+    target.value = completedString;
+
+    // Update model
+    target.blur();
+    target.focus();
+
+    //
   }
 
   private _insertListSyntax(syntax: string): void {
