@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 
 export class EditorComponent {
   viewSettings: boolean = false;
+
+  // TODO: remove after refactoring formatting controls
   isSelected: boolean = false;
   selectionStart: number;
   selectionEnd: number;
