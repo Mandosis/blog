@@ -69,49 +69,33 @@ export class EditorComponent {
   }
 
   private _insertWrappingSyntax(syntax: string): void {
-    let inputIndex = this.focusedInput.index;
-    let inputValue = this.inputs[inputIndex].value;
-    let selectionStart = this.focusedInput.selectionStart;
-    let selectionEnd = this.focusedInput.selectionEnd;
+    let input: any = this._getFocusedMarkdownInput();
 
-    // Get all code-editor and markdown-editor elements
-    let nodeList: NodeListOf<Element> = document.querySelectorAll('code-editor, markdown-editor');
+    let isSelected: boolean = !(input.selectionStart == input.selectionEnd);
+    let notNull: boolean = (input.selectionStart !== null && input.selectionEnd !== null);
 
-    // Get the focused element
-    let markdownInput: Element = nodeList[this.focusedInput.index];
+    if (!isSelected && notNull) {
+      let beforeSelection: string = (input.value).substring(0, input.selectionStart);
+      let afterSelection: string = (input.value).substring(input.selectionEnd, input.value.length);
 
-    // Get the textarea inside
-    let target: HTMLTextAreaElement = markdownInput.getElementsByTagName('textarea')[0];
+      let completedString: string = beforeSelection + syntax + syntax + afterSelection;
 
-    if (selectionStart == selectionEnd && (selectionStart !== null && selectionEnd !== null)) {
-      let beforeSelection = (inputValue).substring(0, selectionStart);
-      let afterSelection = (inputValue).substring(selectionEnd, inputValue.length);
+      let caretPosition: number = input.selectionEnd + syntax.length;
 
-      let completedString = beforeSelection + syntax + syntax + afterSelection;
-
-      target.value = completedString;
-
-      // Updates model
-      target.blur();
-      target.focus();
-
-      // Moves caret position
-      target.setSelectionRange(selectionStart + syntax.length, selectionEnd + syntax.length);
+      input.update(completedString);
+      input.moveCaret(caretPosition);
 
     } else {
-      let beforeSelection = (inputValue).substring(0, selectionStart);
-      let afterSelection = (inputValue).substring(selectionEnd, inputValue.length);
-      let selection = (inputValue).substring(selectionStart, selectionEnd);
+      let beforeSelection = (input.value).substring(0, input.selectionStart);
+      let afterSelection = (input.value).substring(input.selectionEnd, input.value.length);
+      let selection = (input.value).substring(input.selectionStart, input.selectionEnd);
 
       let completedString = beforeSelection + syntax + selection + syntax + afterSelection;
 
-      target.value = completedString;
-      // Update model
-      target.blur();
-      target.focus();
+      let caretPosition: number = input.selectionEnd + (syntax.length * 2);
 
-      // Moves caret position
-      target.setSelectionRange(selectionEnd + (syntax.length * 2), selectionEnd + (syntax.length * 2));
+      input.update(completedString);
+      input.moveCaret(caretPosition);
 
     }
 
@@ -121,77 +105,63 @@ export class EditorComponent {
 
     syntax = '\n' + syntax;
 
-    let inputIndex = this.focusedInput.index;
-    let inputValue = this.inputs[inputIndex].value;
-    let selectionEnd = this.focusedInput.selectionEnd;
+    let input = this._getFocusedMarkdownInput();
 
-    // Get all code-editor and markdown-editor elements
-    let nodeList: NodeListOf<Element> = document.querySelectorAll('code-editor, markdown-editor');
-
-    // Get the focused element
-    let markdownInput: Element = nodeList[this.focusedInput.index];
-
-    // Get the textarea inside
-    let target: HTMLTextAreaElement = markdownInput.getElementsByTagName('textarea')[0];
-
-    let beforeSelection = (inputValue).substring(0, selectionEnd);
-    let afterSelection = (inputValue).substring(selectionEnd, inputValue.length);
+    let beforeSelection = (input.value).substring(0, input.selectionEnd);
+    let afterSelection = (input.value).substring(input.selectionEnd, input.value.length);
 
     let completedString = beforeSelection + syntax + afterSelection;
+    let caretPosition = input.selectionEnd + syntax.length;
 
-    target.value = completedString;
-
-    // Update model
-    target.blur();
-    target.focus();
-
-    // Move cursor position
-    target.setSelectionRange(selectionEnd + syntax.length, selectionEnd + syntax.length);
+    input.update(completedString);
+    input.moveCaret(caretPosition);
   }
 
   private _insertListSyntax(syntax: string): void {
-    let editor = document.getElementsByTagName('textarea')[0];
+    let input: any = this._getFocusedMarkdownInput();
     let currentLine = this._getCurrentLine();
 
-    let beforeCurrentLine = (editor.value).substring(0, currentLine.start);
-    let afterCurrentLine = (editor.value).substring(currentLine.end, editor.value.length);
+    let beforeCurrentLine = (input.value).substring(0, currentLine.start);
+    let afterCurrentLine = (input.value).substring(currentLine.end, input.value.length);
 
 
     let completedString = beforeCurrentLine + syntax + ' ' + currentLine.value + afterCurrentLine;
 
     // console.log(completedString.replace(/(\n)/g, '\\n'));
-    console.log('After Current Line:', afterCurrentLine.replace(/(\n)/g, '\\n'));
-    console.log('Current Line Value:', currentLine.value.replace(/(\n)/g, '\\n'));
+    // console.log('After Current Line:', afterCurrentLine.replace(/(\n)/g, '\\n'));
+    // console.log('Current Line Value:', currentLine.value.replace(/(\n)/g, '\\n'));
 
-    // FIX ngModel not updating until user input in textarea (possible fix: bind value of textarea instead of model)
-    // FIX syntax inserting at end of line if there is content below
 
-    editor.value = completedString;
+    // Update model
+    input.update(completedString);
 
-    this.post.body = editor.value;
-
-    if (currentLine.isEmpty) {
-      console.log('Line is empty');
-    } else {
-      console.log('Line contains symbols');
-    }
+    // if (currentLine.isEmpty) {
+    //   console.log('Line is empty');
+    // } else {
+    //   console.log('Line contains symbols');
+    // }
 
 
   }
 
+  /**
+   * Gets the contents of the current line of focused input
+   */
   private _getCurrentLine() {
-    let editor = document.getElementsByTagName('textarea')[0];
+
+    let input: any = this._getFocusedMarkdownInput(); 
+
     let lineStart: number;
     let lineEnd: number;
 
     // Get text before caret
-    for(lineStart = editor.selectionStart; lineStart >= 0 && editor.value[lineStart] != '\n'; --lineStart);
+    for(lineStart = input.selectionStart; lineStart >= 0 && input.value[lineStart] != '\n'; --lineStart);
 
     // Get text after the caret
-    for(lineEnd = editor.selectionEnd; lineEnd < editor.value.length && editor.value[lineEnd] != '\n'; ++lineEnd);
+    for(lineEnd = input.selectionEnd; lineEnd < input.value.length && input.value[lineEnd] != '\n'; ++lineEnd);
 
     // Get substring of current line
-    let currentLine = (editor.value).substring(lineStart, lineEnd);
+    let currentLine = (input.value).substring(lineStart, lineEnd);
 
     // Adjust for new lines
     if (/(\n)/g.test(currentLine)) {
@@ -219,22 +189,6 @@ export class EditorComponent {
 
   }
 
-  updateCaretPosition(event) {
-
-    console.log('event',event);
-
-    this.post.body = this.post.body;
-
-    if (this.caret.move) {
-
-      console.log('moving caret position...');
-      let editor = document.getElementsByTagName('textarea')[0];
-
-      editor.setSelectionRange(this.caret.selectionStart, this.caret.selectionEnd);
-
-      this.caret.move = false;
-    }
-  }
 
   /**
    * Inserts a code editor with a text area after
@@ -312,5 +266,55 @@ export class EditorComponent {
       selectionEnd: null
     };
   }
+
+
+
+
+
+  /**
+   * Get info for currently focused input
+   */
+  private _getFocusedMarkdownInput() {
+    let inputIndex = this.focusedInput.index;
+    let inputValue = this.inputs[inputIndex].value;
+    let selectionStart = this.focusedInput.selectionStart;
+    let selectionEnd = this.focusedInput.selectionEnd;
+
+    // Get all code-editor and markdown-editor elements
+    let nodeList: NodeListOf<Element> = document.querySelectorAll('code-editor, markdown-editor');
+
+    // Get the focused element
+    let markdownInput: Element = nodeList[this.focusedInput.index];
+
+    // Get the textarea inside
+    let target: HTMLTextAreaElement = markdownInput.getElementsByTagName('textarea')[0];
+
+    let update = (value: string) => {
+      target.value = value;
+      target.blur();
+      target.focus();
+    };
+
+    let moveCaret = (start: number, end?: number) => {
+      if (!end) {
+        end = start;
+      }
+
+      target.setSelectionRange(start, end);
+    };
+
+    let api = {
+      index: inputIndex,
+      value: inputValue,
+      element: target,
+      selectionStart: selectionStart,
+      selectionEnd: selectionEnd,
+      update: update,
+      moveCaret: moveCaret
+    };
+
+    return api;
+  }
+
 
 }
