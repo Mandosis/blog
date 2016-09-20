@@ -117,9 +117,10 @@ export class EditorComponent {
 
   private _insertNonWrappingSyntax(syntax: string): void {
 
+    syntax = '\n' + syntax;
+
     let inputIndex = this.focusedInput.index;
     let inputValue = this.inputs[inputIndex].value;
-    let selectionStart = this.focusedInput.selectionStart;
     let selectionEnd = this.focusedInput.selectionEnd;
 
     // Get all code-editor and markdown-editor elements
@@ -131,10 +132,10 @@ export class EditorComponent {
     // Get the textarea inside
     let target: HTMLTextAreaElement = markdownInput.getElementsByTagName('textarea')[0];
 
-    let beforeSelection = (inputValue).substring(0, selectionStart);
+    let beforeSelection = (inputValue).substring(0, selectionEnd);
     let afterSelection = (inputValue).substring(selectionEnd, inputValue.length);
 
-    let completedString = beforeSelection + afterSelection + `\n${syntax}`;
+    let completedString = beforeSelection + syntax + afterSelection;
 
     target.value = completedString;
 
@@ -142,7 +143,8 @@ export class EditorComponent {
     target.blur();
     target.focus();
 
-    //
+    // Move cursor position
+    target.setSelectionRange(selectionEnd + syntax.length, selectionEnd + syntax.length);
   }
 
   private _insertListSyntax(syntax: string): void {
