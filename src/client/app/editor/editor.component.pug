@@ -61,10 +61,10 @@ section("(click)"="viewSettings = false")
 
   //- Editor Body
 
-  section.editor("(click)"="focusLastInput($event)" "(scroll)"="syncScrollPosition()")
-    div.input("*ngFor"="let input of inputs")
-      markdown-editor( "[(ngModel)]"="input.value" "*ngIf"="input.type == 'markdown'")
-      code-editor("[(ngModel)]"="input.value" "*ngIf"="input.type == 'code'"  "[config]"="{ lineNumbers: true, mode: input.language}")
+  section.editor((click)="focusLastInput($event)", (scroll)="syncScrollPosition()")
+    div.input("*ngFor"="let input of inputs; let i = index")
+      markdown-editor( [(ngModel)]="input.value", *ngIf="input.type == 'markdown'", (focus)="focusedInput.index = i", (blur)="resetFocusedInput()", (select)="setFocusedInputSelection($event)", (click)="setFocusedInputSelection($event)", (input)="setFocusedInputSelection($event)")
+      code-editor([(ngModel)]="input.value", *ngIf="input.type == 'code'",  [config]="{ lineNumbers: true, mode: input.language}", (focus)="focusedInput.index = i", (blur)="resetFocusedInput()")
 
   //- Preview
   section.preview

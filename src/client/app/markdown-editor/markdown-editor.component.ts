@@ -30,6 +30,13 @@ export class MarkdownEditorComponent {
   @Input() model: any;
 
   @Output() change: EventEmitter<any> = new EventEmitter();
+
+  /**
+   * Simulate textarea events
+   */
+  @Output() focus: EventEmitter<any> = new EventEmitter();
+  @Output() blur: EventEmitter<any> = new EventEmitter();
+
   @ViewChild('host') host;
 
   private _value: string = '';
@@ -61,7 +68,14 @@ export class MarkdownEditorComponent {
     // Add focus event listener
     this.renderer.listen(this.instance, 'focus', () => {
       this.updateValue(this.host.nativeElement.value);
-    })
+      this.focus.emit(null);
+    });
+
+    // Add blur event listener
+    this.renderer.listen(this.instance, 'blur', () => {
+      this.blur.emit(null);
+    });
+
   }
 
   updateValue(value) {

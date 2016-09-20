@@ -14,16 +14,26 @@ export class EditorComponent {
   cursorPosition: number;
   listFormat: string;
 
-  inputs: Array<Object> = [{
+  /**
+   * Contains the info for the input that has focus.
+   * Warning: If modified, resetFocusedElement must also be changed
+   */
+  focusedInput: any = {
+    index: null,
+    selectionStart: null,
+    selectionEnd: null
+  };
+
+  inputs: Array<any> = [{
     value: '# Hello',
     type: 'markdown'
   }];
 
+  // TODO Refactor
   post = {
     title: 'Welcome to the Editor',
-    body: '# Hello'
+    body: ''
   }
-  title: string = 'Editor';
 
   caret: any = {
     selectionStart: 0,
@@ -39,23 +49,6 @@ export class EditorComponent {
     }
   }
 
-  getSelected(event: any) {
-
-
-    this.isSelected = true;
-
-    let editor = event.target;
-    this.selectionStart = editor.selectionStart;
-    this.selectionEnd = editor.selectionEnd;
-  }
-
-  getCaretPosition(event: any) {
-    this.isSelected = false;
-    let editor = event.target;
-
-    this.cursorPosition = editor.selectionStart;
-
-  }
 
   insertSyntax(syntax: string, type: string): void {
     switch(type.toLowerCase()) {
@@ -74,35 +67,47 @@ export class EditorComponent {
   }
 
   private _insertWrappingSyntax(syntax: string): void {
-    if (!this.isSelected) {
-      let editor = document.getElementsByTagName('textarea')[0];
+    let inputIndex = this.focusedInput.index;
+    let inputValue = this.inputs[inputIndex].value;
+    let selectionStart = this.focusedInput.selectionStart;
+    let selectionEnd = this.focusedInput.selectionEnd;
 
-      let beforeSelection = (this.post.body).substring(0, editor.selectionStart);
-      let afterSelection = (this.post.body).substring(editor.selectionEnd, this.post.body.length);
+    // Get all code-editor and markdown-editor elements
+    let nodeList: NodeListOf<Element> = document.querySelectorAll('code-editor, markdown-editor');
+
+    // Get the focused element
+    let markdownInput: Element = nodeList[this.focusedInput.index];
+
+    // Get the textarea inside
+    let target: HTMLTextAreaElement = markdownInput.getElementsByTagName('textarea')[0];
+
+    if (selectionStart == selectionEnd && (selectionStart !== null && selectionEnd !== null)) {
+      let beforeSelection = (inputValue).substring(0, selectionStart);
+      let afterSelection = (inputValue).substring(selectionEnd, inputValue.length);
 
       let completedString = beforeSelection + syntax + syntax + afterSelection;
 
-      this.caret.selectionStart = editor.selectionStart;
-      this.caret.selectionEnd = editor.selectionEnd;
-      this.caret.move = true;
+      target.value = completedString;
 
-      // The value of the textarea must be set directly to move caret;
-      // this.post.body = completedString;
-      editor.value = completedString;
-      editor.blur();
-      editor.focus();
-      editor.setSelectionRange(editor.selectionStart - syntax.length, editor.selectionEnd - syntax.length);
+      // Updates model
+      target.blur();
+      target.focus();
+
+      // Moves caret position
+      target.setSelectionRange(target.selectionStart - syntax.length, target.selectionEnd - syntax.length);
 
     } else {
-      let beforeSelection = (this.post.body).substring(0, this.selectionStart);
-      let afterSelection = (this.post.body).substring(this.selectionEnd, this.post.body.length);
-      let selection = (this.post.body).substring(this.selectionStart, this.selectionEnd);
+      let beforeSelection = (inputValue).substring(0, selectionStart);
+      let afterSelection = (inputValue).substring(selectionEnd, inputValue.length);
+      let selection = (inputValue).substring(selectionStart, selectionEnd);
 
       let completedString = beforeSelection + syntax + selection + syntax + afterSelection;
 
-      this.post.body = completedString;
+      target.value = completedString;
 
-
+      // Update model
+      target.blur();
+      target.focus();
     }
 
   }
@@ -259,4 +264,25 @@ export class EditorComponent {
     preview.scrollLeft = preview.scrollWidth * scrollLeftPercent;
 
   }
+
+  /**
+   * Sets the selected index for the currently focused element
+   */
+  setFocusedInputSelection(event: any): void {
+    let element: HTMLTextAreaElement = event.target;
+    this.focusedInput.selectionStart = element.selectionStart;
+    this.focusedInput.selectionEnd = element.selectionEnd;
+  }
+
+  /**
+   * Resets values in focusedInput
+   */
+  resetFocusedInput(): void {
+    this.focusedInput = {
+      index: null,
+      selectionStart: null,
+      selectionEnd: null
+    };
+  }
+
 }
