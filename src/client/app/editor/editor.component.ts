@@ -114,17 +114,34 @@ export class EditorComponent {
 
   private _insertListSyntax(syntax: string): void {
     let input: any = this._getFocusedMarkdownInput();
-    let currentLine = this._getCurrentLine();
+    let currentLine: any = this._getCurrentLine();
 
-    let beforeCurrentLine = (input.value).substring(0, currentLine.start);
-    let afterCurrentLine = (input.value).substring(currentLine.end, input.value.length);
+    let syntaxExp: RegExp = new RegExp('^(' + syntax + ')','g');
 
-    let completedString = beforeCurrentLine + syntax + ' ' + currentLine.value + afterCurrentLine;
-    let caretPosition = input.selectionEnd + syntax.length + 1;
+    let startsWithSyntax: boolean = syntaxExp.test(currentLine.value);
 
+    let beforeCurrentLine: string = (input.value).substring(0, currentLine.start);
+    let afterCurrentLine: string = (input.value).substring(currentLine.end, input.value.length);
+    let completedString: string;
+    let caretPosition: number;
+
+    console.log(startsWithSyntax);
+
+
+    if (startsWithSyntax) {
+      currentLine.value = currentLine.value.replace(syntaxExp, '');
+      console.log(currentLine.value)
+
+      completedString = beforeCurrentLine + currentLine.value + afterCurrentLine;
+      caretPosition = input.selectionEnd - syntax.length;
+    } else {
+      completedString = beforeCurrentLine + syntax + currentLine.value + afterCurrentLine;
+      caretPosition = input.selectionEnd + syntax.length;
+
+    }
     input.update(completedString);
     input.moveCaret(caretPosition);
-    
+
   }
 
   /**
