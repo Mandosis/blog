@@ -37,11 +37,6 @@ export class EditorComponent {
     body: ''
   }
 
-  caret: any = {
-    selectionStart: 0,
-    selectionEnd: 0,
-    move: false
-  };
 
   extendSettings(): void {
     if (this.viewSettings) {
@@ -315,6 +310,16 @@ export class EditorComponent {
 
     return api;
   }
+
+  get combinedBodyValue() {
+    let combined: string = '';
+
+    for (let input of this.inputs) {
+      combined += `${input.value}\n`;
+    }
+
+    return combined;
+  };
 
 
 }

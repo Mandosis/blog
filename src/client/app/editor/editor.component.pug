@@ -78,7 +78,7 @@ footer("(click)"="viewSettings = false")
     p.name Markdown
   section.right
     p.name Preview
-    p.count Word Count: {{post.body | wordCount }}
+    p.count Word Count: {{combinedBodyValue | wordCount }}
 
 aside("[class.open]"="viewSettings")
 
