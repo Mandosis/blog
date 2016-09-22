@@ -119,24 +119,12 @@ export class EditorComponent {
     let beforeCurrentLine = (input.value).substring(0, currentLine.start);
     let afterCurrentLine = (input.value).substring(currentLine.end, input.value.length);
 
-
     let completedString = beforeCurrentLine + syntax + ' ' + currentLine.value + afterCurrentLine;
+    let caretPosition = input.selectionEnd + syntax.length + 1;
 
-    // console.log(completedString.replace(/(\n)/g, '\\n'));
-    // console.log('After Current Line:', afterCurrentLine.replace(/(\n)/g, '\\n'));
-    // console.log('Current Line Value:', currentLine.value.replace(/(\n)/g, '\\n'));
-
-
-    // Update model
     input.update(completedString);
-
-    // if (currentLine.isEmpty) {
-    //   console.log('Line is empty');
-    // } else {
-    //   console.log('Line contains symbols');
-    // }
-
-
+    input.moveCaret(caretPosition);
+    
   }
 
   /**
@@ -150,30 +138,26 @@ export class EditorComponent {
     let lineEnd: number;
 
     // Get text before caret
-    for(lineStart = input.selectionStart; lineStart >= 0 && input.value[lineStart] != '\n'; --lineStart);
+    for(lineStart = input.selectionStart - 1; lineStart >= 0 && input.value[lineStart] != '\n'; --lineStart);
 
     // Get text after the caret
-    for(lineEnd = input.selectionEnd; lineEnd < input.value.length && input.value[lineEnd] != '\n'; ++lineEnd);
+    for(lineEnd = input.selectionStart + 1; lineEnd < input.value.length && input.value[lineEnd] != '\n'; ++lineEnd);
+
 
     // Get substring of current line
     let currentLine = (input.value).substring(lineStart, lineEnd);
 
-    // Adjust for new lines
-    if (/(\n)/g.test(currentLine)) {
-
-      if (/^(\n)/g.test(currentLine)) {
-        console.log('Line starts with \\n')
-        lineStart++;
-      }
-
-      if (/$(\n)/g.test(currentLine)) {
-        console.log('Line ends with \\n');
-        lineEnd--;
-      }
-
-      currentLine = currentLine.replace(/(\n)/g, '');
-
+    // Adjust for new line at beginning
+    if (/^(\n)/g.test(currentLine)) {
+      lineStart++;
     }
+
+    // Adjust for new line at end
+    if (/(\n)$/g.test(currentLine)) {
+      lineEnd--;
+    }
+
+    currentLine = currentLine.replace(/(\n)/g, '');
 
     return {
       start: lineStart,
