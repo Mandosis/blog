@@ -64,7 +64,7 @@ export class EditorComponent {
   }
 
   private _insertWrappingSyntax(syntax: string): void {
-    let input: any = this._getFocusedMarkdownInput();
+    let input: any = this._getFocusedInput();
 
     let isSelected: boolean = !(input.selectionStart == input.selectionEnd);
     let notNull: boolean = (input.selectionStart !== null && input.selectionEnd !== null);
@@ -78,7 +78,7 @@ export class EditorComponent {
       let caretPosition: number = input.selectionEnd + syntax.length;
 
       input.update(completedString);
-      input.moveCaret(caretPosition);
+      input.setCursor(caretPosition);
 
     } else {
       let beforeSelection = (input.value).substring(0, input.selectionStart);
@@ -90,7 +90,7 @@ export class EditorComponent {
       let caretPosition: number = input.selectionEnd + (syntax.length * 2);
 
       input.update(completedString);
-      input.moveCaret(caretPosition);
+      input.setCursor(caretPosition);
 
     }
 
@@ -100,7 +100,7 @@ export class EditorComponent {
 
     syntax = '\n' + syntax;
 
-    let input = this._getFocusedMarkdownInput();
+    let input = this._getFocusedInput();
 
     let beforeSelection = (input.value).substring(0, input.selectionEnd);
     let afterSelection = (input.value).substring(input.selectionEnd, input.value.length);
@@ -109,11 +109,11 @@ export class EditorComponent {
     let caretPosition = input.selectionEnd + syntax.length;
 
     input.update(completedString);
-    input.moveCaret(caretPosition);
+    input.setCursor(caretPosition);
   }
 
   private _insertListSyntax(syntax: string): void {
-    let input: any = this._getFocusedMarkdownInput();
+    let input: any = this._getFocusedInput();
     let currentLine: any = this._getCurrentLine();
 
     let syntaxExp: RegExp = new RegExp('^(' + syntax + ')','g');
@@ -140,7 +140,7 @@ export class EditorComponent {
 
     }
     input.update(completedString);
-    input.moveCaret(caretPosition);
+    input.setCursor(caretPosition);
 
   }
 
@@ -149,7 +149,7 @@ export class EditorComponent {
    */
   private _getCurrentLine() {
 
-    let input: any = this._getFocusedMarkdownInput(); 
+    let input: any = this._getFocusedInput(); 
 
     let lineStart: number;
     let lineEnd: number;
@@ -199,7 +199,9 @@ export class EditorComponent {
     this.inputs.push({
       type: 'markdown',
       value: ''
-    })
+    });
+
+    let currentInput = this._getFocusedInput
   }
 
   /**
@@ -270,43 +272,65 @@ export class EditorComponent {
   /**
    * Get info for currently focused input
    */
-  private _getFocusedMarkdownInput() {
-    let inputIndex = this.focusedInput.index;
-    let inputValue = this.inputs[inputIndex].value;
-    let selectionStart = this.focusedInput.selectionStart;
-    let selectionEnd = this.focusedInput.selectionEnd;
+  private _getFocusedInput() {
+    let inputIndex: number = this.focusedInput.index;
+    let inputValue: string = this.inputs[inputIndex].value;
+    let inputType: string = this.inputs[inputIndex].type;
+    let selectionStart: number;
+    let selectionEnd: number;
 
     // Get all code-editor and markdown-editor elements
     let nodeList: NodeListOf<Element> = document.querySelectorAll('code-editor, markdown-editor');
 
     // Get the focused element
-    let markdownInput: Element = nodeList[this.focusedInput.index];
+    let containerElement: Element = nodeList[this.focusedInput.index];
+
+    let inputElement: any;
+
+
+    if (inputType === 'markdown') {
+      inputElement = containerElement.getElementsByTagName('textarea')[0];
+      selectionStart = inputElement.selectionStart;
+      selectionEnd = inputElement.selectionEnd;
+    } else {
+      inputElement = containerElement.getElementsByClassName('CodeMirror')[0];
+    }
+
 
     // Get the textarea inside
-    let target: HTMLTextAreaElement = markdownInput.getElementsByTagName('textarea')[0];
 
     let update = (value: string) => {
-      target.value = value;
-      target.blur();
-      target.focus();
+
+      if (inputType === 'markdown') {
+        inputElement.value = value;
+        inputElement.blur();
+        inputElement.focus();
+
+      } else {
+        inputElement.setValue(value);
+      }
     };
 
-    let moveCaret = (start: number, end?: number) => {
+    let setCursor = (start: number, end?: number) => {
       if (!end) {
         end = start;
       }
 
-      target.setSelectionRange(start, end);
+      if (inputType === 'markdown') {
+        inputElement.setSelectionRange(start, end);
+      } else {
+        inputElement.setSelection(start, end);
+      }
     };
 
-    let api = {
+    let api: Object = {
       index: inputIndex,
       value: inputValue,
-      element: target,
+      element: inputElement,
       selectionStart: selectionStart,
       selectionEnd: selectionEnd,
       update: update,
-      moveCaret: moveCaret
+      setCursor: setCursor
     };
 
     return api;

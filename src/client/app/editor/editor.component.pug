@@ -14,29 +14,29 @@ section("(click)"="viewSettings = false")
 
       //- Choose heading level
       ul.dropdown
-        li("(click)"="insertSyntax('# ', 'nowrap')")
+        li((click)="insertSyntax('# ', 'nowrap')")
           span H1
-        li("(click)"="insertSyntax('## ', 'nowrap')")
+        li((click)="insertSyntax('## ', 'nowrap')")
           span H2
-        li("(click)"="insertSyntax('### ', 'nowrap')")
+        li((click)="insertSyntax('### ', 'nowrap')")
           span H3
-        li("(click)"="insertSyntax('#### ', 'nowrap')")
+        li((click)="insertSyntax('#### ', 'nowrap')")
           span H4
-        li("(click)"="insertSyntax('##### ', 'nowrap')")
+        li((click)="insertSyntax('##### ', 'nowrap')")
           span H5
-        li("(click)"="insertSyntax('###### ', 'nowrap')")
+        li((click)="insertSyntax('###### ', 'nowrap')")
           span H6
 
     //- Bold
-    li("(click)"="insertSyntax('**', 'wrap')")
+    li((click)="insertSyntax('**', 'wrap')")
       i.fa.fa-bold
 
     //- Italic
-    li("(click)"="insertSyntax('_', 'wrap')")
+    li((click)="insertSyntax('_', 'wrap')")
       i.fa.fa-italic
 
     //- Strikethrough
-    li("(click)"="insertSyntax('~~', 'wrap')")
+    li((click)="insertSyntax('~~', 'wrap')")
       i.fa.fa-strikethrough
 
     //- Ordered List
@@ -44,19 +44,19 @@ section("(click)"="viewSettings = false")
       i.fa.fa-list-ol
 
     //- Unordered List
-    li("(click)"="insertSyntax('- ', 'list')")
+    li((click)="insertSyntax('- ', 'list')")
       i.fa.fa-list-ul
 
     //- Link
-    li("(click)"="insertSyntax('[]()', 'nowrap')")
+    li((click)="insertSyntax('[]()', 'nowrap')")
       i.fa.fa-link
 
     //- Picture
-    li("(click)"="insertSyntax('![]()', 'nowrap')")
+    li((click)="insertSyntax('![]()', 'nowrap')")
       i.fa.fa-picture-o
 
     //- Code Editor
-    li("(click)"="insertCodeEditor()")
+    li((click)="insertCodeEditor()")
       i.fa.fa-code
 
   //- Editor Body
