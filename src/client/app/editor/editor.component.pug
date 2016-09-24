@@ -1,5 +1,9 @@
 header
-  input(type="text" "[(ngModel)]"="post.title" "(click)"="viewSettings = false")
+  input(
+    type        = "text",
+    [(ngModel)] = "post.title",
+    (click)     = "viewSettings = false"
+  )
   button.publish Publish
   button.settings("(click)"="extendSettings()")
     i.fa.fa-cog
@@ -61,17 +65,45 @@ section("(click)"="viewSettings = false")
 
   //- Editor Body
 
-  section.editor((click)="focusLastInput($event)", (scroll)="syncScrollPosition()")
+  section.editor(
+    (click)  = "focusLastInput($event)",
+    (scroll) = "syncScrollPosition()"
+  )
     div.input("*ngFor"="let input of inputs; let i = index")
-      markdown-editor( [(ngModel)]="input.value", *ngIf="input.type == 'markdown'", (focus)="focusedInput.index = i", (blur)="resetFocusedInput()", (select)="setFocusedInputSelection($event)", (click)="setFocusedInputSelection($event)", (input)="setFocusedInputSelection($event)", (keyup)="setFocusedInputSelection($event)")
-      code-editor([(ngModel)]="input.value", *ngIf="input.type == 'code'",  [config]="{ lineNumbers: true, mode: input.language}", (focus)="focusedInput.index = i", (blur)="resetFocusedInput()")
+      markdown-editor(
+        [(ngModel)] = "input.value",
+        *ngIf       = "input.type == 'markdown'",
+        (focus)     = "focusedInput.index = i",
+        (blur)      = "resetFocusedInput()",
+        (select)    = "setFocusedInputSelection($event)",
+        (click)     = "setFocusedInputSelection($event)",
+        (input)     = "setFocusedInputSelection($event)",
+        (keyup)     = "setFocusedInputSelection($event)"
+      )
+      code-editor(
+        [(ngModel)] = "input.value",
+        *ngIf       = "input.type == 'code'", 
+        [config]    = "{ lineNumbers: true, mode: input.language}",
+        (focus)     = "focusedInput.index = i",
+        (blur)      = "resetFocusedInput()"
+      )
 
   //- Preview
   section.preview
     div("*ngFor"="let input of inputs")
-      span("*ngIf"="input.type == 'markdown'" "[innerHtml]"="input.value | markdown")
-      pre("*ngIf"="input.type == 'code'" "[ngClass]"="addLanguageClass(input)" "[attr.data-title]"="input.language")
-        code("[ngClass]"="addLanguageClass(input)" "[innerHtml]"="input.value | prism:input.language")
+      span(
+        *ngIf       = "input.type == 'markdown'",
+        [innerHtml] = "input.value | markdown"
+      )
+      pre(
+        *ngIf             = "input.type == 'code'",
+        [ngClass]         = "addLanguageClass(input)",
+        [attr.data-title] ="input.language"
+      )
+        code(
+          [ngClass]   = "addLanguageClass(input)",
+          [innerHtml] = "input.value | prism:input.language"
+        )
 
 footer("(click)"="viewSettings = false")
   section.left
@@ -89,4 +121,7 @@ aside("[class.open]"="viewSettings")
   input(type="text" disabled)
 
   p url
-  input(type="url" "[attr.value]"="post.title | url")
+  input(
+    type         = "url",
+    [attr.value] = "post.title | url"
+  )
