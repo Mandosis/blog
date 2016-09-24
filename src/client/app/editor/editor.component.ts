@@ -227,6 +227,12 @@ export class EditorComponent {
     // Prevent error when clicking on the last text area
     if (lastTextArea) {
       lastTextArea.focus();
+      
+      let focusedInput: any = this._getFocusedInput();
+      let cursorPosition: number = focusedInput.value.length;
+
+      focusedInput.setCursor(cursorPosition);
+
     }
   }
 
@@ -323,7 +329,7 @@ export class EditorComponent {
       }
     };
 
-    let api: Object = {
+    let api = {
       index: inputIndex,
       value: inputValue,
       element: inputElement,
@@ -332,6 +338,7 @@ export class EditorComponent {
       update: update,
       setCursor: setCursor
     };
+
 
     return api;
   }
