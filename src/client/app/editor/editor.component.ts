@@ -8,13 +8,8 @@ import { Component, OnInit } from '@angular/core';
 
 export class EditorComponent {
   viewSettings: boolean = false;
+  mousedown: boolean = false;
 
-  // TODO: remove after refactoring formatting controls
-  isSelected: boolean = false;
-  selectionStart: number;
-  selectionEnd: number;
-  cursorPosition: number;
-  listFormat: string;
 
   /**
    * Contains the info for the input that has focus.
@@ -352,6 +347,22 @@ export class EditorComponent {
 
     return combined;
   };
+
+  // TODO: Retain highlight
+  setFocusToInput(event, index): void {
+    if (this.mousedown) {
+      let unfocusedInput: any;
+      let childrenLength: number = event.target.children.length;
+
+      if (childrenLength > 1) {
+        unfocusedInput = event.target.children[1].CodeMirror;
+      } else {
+        unfocusedInput = event.target.children[0];
+      }
+
+      unfocusedInput.focus();
+    }
+  }
 
 
 }

@@ -66,8 +66,10 @@ section("(click)"="viewSettings = false")
   //- Editor Body
 
   section.editor(
-    (click)  = "focusLastInput($event)",
-    (scroll) = "syncScrollPosition()"
+    (click)     = "focusLastInput($event)",
+    (scroll)    = "syncScrollPosition()",
+    (mousedown) = "mousedown = true",
+    (mouseup)   = "mousedown = false"
   )
     div.input("*ngFor"="let input of inputs; let i = index")
       markdown-editor(
@@ -78,14 +80,14 @@ section("(click)"="viewSettings = false")
         (select)    = "setFocusedInputSelection($event)",
         (click)     = "setFocusedInputSelection($event)",
         (input)     = "setFocusedInputSelection($event)",
-        (keyup)     = "setFocusedInputSelection($event)"
+        (keyup)     = "setFocusedInputSelection($event)",
       )
       code-editor(
         [(ngModel)] = "input.value",
         *ngIf       = "input.type == 'code'", 
-        [config]    = "{ lineNumbers: true, mode: input.language}",
+        [config]    = "{ lineNumbers: true, mode: { name: 'javascript', typescript: true }}",
         (focus)     = "focusedInput.index = i",
-        (blur)      = "resetFocusedInput()"
+        (blur)      = "resetFocusedInput()",
       )
 
   //- Preview
