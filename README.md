@@ -1,6 +1,6 @@
 # Blog
 
-This repository is for a developer focused blogging software that can be used to share code and ideas.
+This repository is for developer focused blogging software that can be used to share code and ideas.
 
 
 ## Instructions
@@ -9,7 +9,8 @@ This software is not yet ready for production.
 ### Requirements
 
 - Node.js v0.6.X
-- Webpack v1.13.1
+- Webpack v2.1.0-beta.22
+- TypeScript v2.0.0
 
 ### Development
 
