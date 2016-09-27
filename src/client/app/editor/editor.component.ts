@@ -188,7 +188,7 @@ export class EditorComponent {
     this.inputs.push({
       type:'code',
       value: '',
-      language: 'javascript'
+      language: 'typescript'
     });
 
     this.inputs.push({
@@ -206,6 +206,7 @@ export class EditorComponent {
     let css = {};
 
     css['language-' + input.language] = true;
+    css['hljs'] = true;
 
     return css;
   }

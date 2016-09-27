@@ -85,7 +85,7 @@ section("(click)"="viewSettings = false")
       code-editor(
         [(ngModel)] = "input.value",
         *ngIf       = "input.type == 'code'", 
-        [config]    = "{ lineNumbers: true, mode: { name: 'javascript', typescript: true }}",
+        [config]    = "{ lineNumbers: true, mode: 'application/' + input.language}",
         (focus)     = "focusedInput.index = i",
         (blur)      = "resetFocusedInput()",
       )
@@ -99,12 +99,11 @@ section("(click)"="viewSettings = false")
       )
       pre(
         *ngIf             = "input.type == 'code'",
-        [ngClass]         = "addLanguageClass(input)",
         [attr.data-title] ="input.language"
       )
         code(
           [ngClass]   = "addLanguageClass(input)",
-          [innerHtml] = "input.value | prism:input.language"
+          [innerHtml] = "input.value | highlightSyntax:input.language"
         )
 
 footer("(click)"="viewSettings = false")

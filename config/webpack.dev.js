@@ -6,11 +6,25 @@ const helpers = require('./helpers');
 
 clientConfig = {
   target: 'web',
-  entry: '../src/client/client',
+  entry: {
+    main: '../src/client/client',
+    vendor: '../src/client/vendor'
+  },
   output: {
-    filename: 'client.min.js',
+    filename: '[name].bundle.js',
     path: helpers.root('../dist/client')
   },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['vendor'].reverse()
+    }),
+
+    new webpack.ProvidePlugin({
+      CodeMirror: 'codemirror'
+    })
+
+
+  ],
   node: {
     global: true,
     __dirname: true,
@@ -36,7 +50,7 @@ var serverConfig = {
     __filename: true,
     process: true,
     Buffer: true
-  }
+  },
 };
 
 module.exports = [

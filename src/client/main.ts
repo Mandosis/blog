@@ -18,7 +18,7 @@ import { LoginComponent } from './app/login/login.component';
 import { MarkdownPipe } from './app/markdown.pipe';
 import { SpeakingurlPipe } from './app/speakingurl.pipe';
 import { WordCountPipe } from './app/word-count.pipe';
-import { PrismPipe } from './app/prism.pipe';
+import { SyntaxHighlightPipe } from './app/syntax-highlight.pipe';
 
 // Services
 import { UserService } from './app/user.service';
@@ -52,7 +52,7 @@ import { MarkdownEditorModule } from './app/markdown-editor/markdown-editor.modu
     MarkdownPipe,
     SpeakingurlPipe,
     WordCountPipe,
-    PrismPipe,
+    SyntaxHighlightPipe,
 
   ],
   providers: [

@@ -15,7 +15,10 @@ declare var CodeMirror: any;
 @Component({
   selector: 'code-editor',
   template: `<textarea #host></textarea>`,
-  styles: [ require('./code-editor.component.scss')],
+  styles: [
+    require('../../../../node_modules/codemirror/lib/codemirror.css'),
+    require('./code-editor.component.scss')
+  ],
   encapsulation: ViewEncapsulation.None,
   providers: [
     {
