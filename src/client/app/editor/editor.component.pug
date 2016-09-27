@@ -99,10 +99,10 @@ section("(click)"="viewSettings = false")
       )
       pre(
         *ngIf             = "input.type == 'code'",
+        [ngClass]   = "addLanguageClass(input)",
         [attr.data-title] ="input.language"
       )
         code(
-          [ngClass]   = "addLanguageClass(input)",
           [innerHtml] = "input.value | highlightSyntax:input.language"
         )
 
