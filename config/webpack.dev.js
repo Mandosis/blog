@@ -6,12 +6,14 @@ const helpers = require('./helpers');
 
 clientConfig = {
   target: 'web',
+  devtool: 'source-map',
   entry: {
     main: '../src/client/client',
     vendor: '../src/client/vendor'
   },
   output: {
     filename: '[name].bundle.js',
+    sourceMapFilename: '[name].bundle.map',
     path: helpers.root('../dist/client')
   },
   plugins: [
@@ -37,10 +39,12 @@ clientConfig = {
 
 var serverConfig = {
   target: 'node',
+  devtool: '#inline-source-map',
   entry: '../src/server/server', // use the entry file of the node server if everything is ts rather than es5
   output: {
     path: helpers.root('../dist'),
     filename: 'server.js',
+    sourceMapFilename: 'server.map',
     libraryTarget: 'commonjs2'
   },
   externals: helpers.checkNodeImport,

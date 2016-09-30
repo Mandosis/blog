@@ -1,43 +1,39 @@
-const webpack = require('webpack');
-const webpackMerge = require('webpack-merge');
-const commonConfig = require('./webpack.common');
-const defaultConfig = require('./webpack.default');
 const helpers = require('./helpers');
-const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
+const webpackMerge = require('webpack-merge');
+const commonConfig = require('./webpack.common.js');
+const defaultConfig = require('./webpack.default.js');
+
+/**
+ * Webpack Plugins
+ */
+// const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
-var clientConfig = {
+
+let clientConfig =  {
   debug: false,
-  target: 'web',
+  // devtool: 'source-map',
   entry: {
-    polyfills: '../src/client/polyfills.ts',
-    // vendor: '../src/client/vendor.ts',
-    main: '../src/client/client.ts'
+    main: '../src/client/client',
+    vendor: '../src/client/vendor'
   },
   output: {
-    filename: '[name].js',
-    path: helpers.root('../dist/client')
+    filename: '[name].bundle.js',
+    path: helpers.root('../dist/client'),
+    // sourceMapFilename: '[name].bundle.map',
   },
   plugins: [
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: ['polyfills', 'vendor'].reverse()
-    }),
-
-    /**
-     * Plugin: DedupePlugin
-     * Description: Prevents the inclusion of duplicate code into your bundle
-     * and instead applies a copy of the function at runtime.
-     */
-    new DedupePlugin(),
-
     new UglifyJsPlugin({
       beautify: false,
-      mangle: { screw_ie8 : true },
-      compress: { screw_ie8: true },
+      mangle: {
+        screw_ie8: true,
+        keep_fnames: true
+      },
+      compress: {
+        screw_ie8: true
+      },
       comments: false
     }),
-
   ],
   node: {
     global: 'window',
@@ -49,34 +45,26 @@ var clientConfig = {
   }
 };
 
+
 var serverConfig = {
   debug: false,
+  devtool: 'source-map',
   target: 'node',
   entry: '../src/server/server', // use the entry file of the node server if everything is ts rather than es5
   output: {
     path: helpers.root('../dist'),
     filename: 'server.js',
+    sourceMapFilename: 'server.map',
     libraryTarget: 'commonjs2'
   },
   externals: helpers.checkNodeImport,
-
-  plugins: [
-    /**
-     * Plugin: DedupePlugin
-     * Description: Prevents the inclusion of duplicate code into your bundle
-     * and instead applies a copy of the function at runtime.
-     */
-    new DedupePlugin(),
-
-  ],
   node: {
-    global: 'window',
-    crypto: 'empty',
-    process: false,
-    module: false,
-    clearImmediate: false,
-    setImmediate: false
-  }
+    global: true,
+    __dirname: true,
+    __filename: true,
+    process: true,
+    Buffer: true
+  },
 };
 
 module.exports = [
@@ -86,4 +74,4 @@ module.exports = [
   // Server
   webpackMerge({}, defaultConfig, commonConfig, serverConfig)
 
-]
+];
