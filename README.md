@@ -10,7 +10,7 @@ This software is not yet ready for production.
 
 - Node.js v0.6.X
 - Webpack v2.1.0-beta.22
-- TypeScript v2.0.0
+- TypeScript v2.0.3
 - PostgreSQL v9.6
 
 ### Development
