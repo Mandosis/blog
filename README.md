@@ -15,16 +15,17 @@ This software is not yet ready for production.
 
 ### Development
 
-1. `git clone https://github.com/Mandosis/blog.git`
-2. `npm install`
-3. Create a file called `.env` with the following contents and modify as needed
+* `git clone https://github.com/Mandosis/blog.git`
+* `npm install`
+* Create a file called `.env` with the following contents and modify as needed
 ```
 DATABASE_URL="postgres://username:password@localhost:5432/dbname"
 PORT=3000
 SECRET="YourSecret"
 ```
-4. `npm run setup`
-5. `npm start`
+* `npm run build`
+* `npm run setup`
+* `npm start`
 
 To rebuild the project on file changes run `npm run watch` and `npm run server`
 
