@@ -9,16 +9,24 @@ This software is not yet ready for production.
 ### Requirements
 
 - Node.js v0.6.X
-- Webpack v2.1.0-beta.22
-- TypeScript v2.0.0
+- Webpack v2.1.0-beta.22 `npm i -g webpack@2.1.0-beta.22`
+- TypeScript v2.0.0+
 - PostgreSQL v9.6
 
 ### Development
 
 1. `git clone https://github.com/Mandosis/blog.git`
 2. `npm install`
-3. `npm run setup`
-4. `npm start`
+3. Create a file called `.env` with the following contents and modify as needed
+```
+DATABASE_URL="postgres://username:password@localhost:5432/dbname"
+PORT=3000
+SECRET="YourSecret"
+```
+4. `npm run setup`
+5. `npm start`
+
+To rebuild the project on file changes run `npm run watch` and `npm run server`
 
 ### Build for production
 
